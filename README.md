@@ -16,7 +16,7 @@ This is a programm used for shooting tournaments.
 ## Releases!
 
 Find the latest relase here =>
-[<b>Release</b>](https://github.com/JustForFunDeveloper/Feed-Manager-WPF-App/releases)
+[<b>Release</b>](https://github.com/JustForFunDeveloper/Tournament-Manager/releases)
 
 - - - -
 ## Short Description of the used libraries and techniques
