@@ -134,7 +134,7 @@
                     VerticalAlignment="Center"
                     BorderBrush="Transparent"
                     Command="{Binding GitHubProject}"
-                    Content="JustForFunDeveloper/Feed-Manager-WPF-App"
+                    Content="JustForFunDeveloper/Tournament-Manager"
                     FontSize="15"
                     Style="{StaticResource MahApps.Styles.Button.Square.Accent}">
                     <Button.ContentTemplate>

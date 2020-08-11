@@ -19,7 +19,6 @@
     ResizeMode="CanResizeWithGrip"
     WindowStartupLocation="CenterScreen"
     WindowTransitionsEnabled="False"
-    Icon="Ressources/target.ico"
     mc:Ignorable="d">
 
     <mah:MetroWindow.LeftWindowCommands>

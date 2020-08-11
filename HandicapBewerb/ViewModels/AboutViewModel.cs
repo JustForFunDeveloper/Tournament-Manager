@@ -55,7 +55,7 @@ namespace HandicapBewerb.ViewModels
         {
             try
             {
-                System.Diagnostics.Process.Start("https://github.com/JustForFunDeveloper/Feed-Manager-WPF-App/releases");
+                System.Diagnostics.Process.Start("https://github.com/JustForFunDeveloper/Tournament-Manager/releases");
             }
             catch (Exception ex)
             {
@@ -85,7 +85,7 @@ namespace HandicapBewerb.ViewModels
         {
             try
             {
-                System.Diagnostics.Process.Start("https://www.die-technik-und-ich.at/?page_id=557");
+                System.Diagnostics.Process.Start("https://www.die-technik-und-ich.at/");
             }
             catch (Exception ex)
             {
@@ -115,7 +115,7 @@ namespace HandicapBewerb.ViewModels
         {
             try
             {
-                System.Diagnostics.Process.Start("https://github.com/JustForFunDeveloper/Feed-Manager-WPF-App");
+                System.Diagnostics.Process.Start("https://github.com/JustForFunDeveloper/Tournament-Manager");
             }
             catch (Exception ex)
             {
@@ -145,7 +145,7 @@ namespace HandicapBewerb.ViewModels
         {
             try
             {
-                System.Diagnostics.Process.Start("https://github.com/JustForFunDeveloper/Feed-Manager-WPF-App/blob/master/LICENSE");
+                System.Diagnostics.Process.Start("https://github.com/JustForFunDeveloper/Tournament-Manager/blob/master/LICENSE");
             }
             catch (Exception ex)
             {
