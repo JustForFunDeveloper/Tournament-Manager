@@ -42,7 +42,7 @@ namespace HandicapBewerb.Core.Handler
             {
                 db.Database.Migrate();
 
-                TestData(db);
+                //TestData(db);
             }
         }
 
