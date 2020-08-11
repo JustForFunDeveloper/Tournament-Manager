@@ -1,0 +1,212 @@
+﻿<UserControl x:Class="HandicapBewerb.Views.UserControls.UserDataControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
+    <UserControl.Resources>
+        <system:Double x:Key="HeaderSize">18</system:Double>
+        <system:Double x:Key="DataSize">15</system:Double>
+        <Brush x:Key="TextBrush">Black</Brush>
+        <Brush x:Key="BorderBrush">Black</Brush>
+        <Brush x:Key="HeaderBrush">#00a300</Brush>
+    </UserControl.Resources>
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0"
+                   Grid.Column="0"
+                   Text="Position"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="2"
+                   Foreground="{StaticResource HeaderBrush}"
+                   FontSize="{StaticResource HeaderSize}"/>
+        <TextBlock Grid.Row="1"
+                   Grid.Column="0"
+                   Text="{Binding Path=Position}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="5"
+                   Foreground="{StaticResource TextBrush}"
+                   FontSize="{StaticResource DataSize}"/>
+        <Rectangle Grid.Column="0"
+                   Grid.Row="0"
+                   Grid.ColumnSpan="5"
+                   Stroke="{StaticResource BorderBrush}"
+                   Height="1"
+                   VerticalAlignment="Bottom"/>
+        <Rectangle Grid.Column="0"
+                   Grid.Row="0"
+                   Grid.RowSpan="2"
+                   Stroke="{StaticResource BorderBrush}"
+                   Width="1"
+                   HorizontalAlignment="Right"/>
+
+        <TextBlock Grid.Row="0"
+                   Grid.Column="1"
+                   Text="Name"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="2"
+                   Foreground="{StaticResource HeaderBrush}"
+                   FontSize="{StaticResource HeaderSize}"/>
+        <TextBlock Grid.Row="1"
+                   Grid.Column="1"
+                   Text="{Binding Path=UserName}"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Margin="5"
+                   Foreground="{StaticResource TextBrush}"
+                   FontSize="{StaticResource DataSize}"/>
+        <Rectangle Grid.Column="1"
+                   Grid.Row="0"
+                   Grid.RowSpan="2"
+                   Stroke="{StaticResource BorderBrush}"
+                   Width="1"
+                   HorizontalAlignment="Right"/>
+
+        <TextBlock Grid.Row="0"
+                   Grid.Column="2"
+                   Text="{Binding Path=ThirdOldestDateTime}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="2"
+                   Foreground="{StaticResource HeaderBrush}"
+                   FontSize="{StaticResource HeaderSize}"/>
+        <TextBlock Grid.Row="1"
+                   Grid.Column="2"
+                   Text="{Binding Path=ThirdOldest}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="5"
+                   Foreground="{StaticResource TextBrush}"
+                   FontSize="{StaticResource DataSize}"/>
+        <Rectangle Grid.Row="0"
+                   Grid.Column="2"
+                   Grid.RowSpan="2"
+                   Stroke="{StaticResource BorderBrush}"
+                   Width="1"
+                   HorizontalAlignment="Right"/>
+
+        <TextBlock Grid.Row="0"
+                   Grid.Column="3"
+                   Text="{Binding Path=SecondOldestDateTime}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="2"
+                   Foreground="{StaticResource HeaderBrush}"
+                   FontSize="{StaticResource HeaderSize}"/>
+        <TextBlock Grid.Row="1"
+                   Grid.Column="3"
+                   Text="{Binding Path=SecondOldest}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="5"
+                   Foreground="{StaticResource TextBrush}"
+                   FontSize="{StaticResource DataSize}"/>
+        <Rectangle Grid.Row="0"
+                   Grid.Column="3"
+                   Grid.RowSpan="2"
+                   Stroke="{StaticResource BorderBrush}"
+                   Width="1"
+                   HorizontalAlignment="Right"/>
+
+        <TextBlock Grid.Row="0"
+                   Grid.Column="4"
+                   Text="{Binding Path=FirstOldestDateTime}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="2"
+                   Foreground="{StaticResource HeaderBrush}"
+                   FontSize="{StaticResource HeaderSize}"/>
+        <TextBlock Grid.Row="1"
+                   Grid.Column="4"
+                   Text="{Binding Path=FirstOldest}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="5"
+                   Foreground="{StaticResource TextBrush}"
+                   FontSize="{StaticResource DataSize}"/>
+
+        <TextBlock Grid.Row="0"
+                   Grid.Column="6"
+                   Text="Nullwert"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="2"
+                   Foreground="{StaticResource HeaderBrush}"
+                   FontSize="{StaticResource HeaderSize}"/>
+        <TextBlock Grid.Row="1"
+                   Grid.Column="6"
+                   Text="{Binding Path=NullValue}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="5"
+                   Foreground="{StaticResource TextBrush}"
+                   FontSize="{StaticResource DataSize}"/>
+        <Rectangle Grid.Column="6"
+                   Grid.Row="0"
+                   Stroke="{StaticResource BorderBrush}"
+                   Height="1"
+                   VerticalAlignment="Bottom"/>
+
+        <TextBlock Grid.Row="0"
+                   Grid.Column="8"
+                   Text="Aktuelle Runde"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="2"
+                   Foreground="{StaticResource HeaderBrush}"
+                   FontSize="{StaticResource HeaderSize}"/>
+        <mah:NumericUpDown Grid.Row="1"
+                           Grid.Column="8"
+                           Minimum="0"
+                           Value="{Binding Path=CurrentRound}" 
+                           TextAlignment="Center"
+                           FontSize="{StaticResource DataSize}"
+                           ValueChanged="NumericUpDown_OnValueChanged"
+                           IsEnabled="{Binding Path=IsInputEnabled}"/>
+        <TextBlock Grid.Row="0"
+                   Grid.Column="10"
+                   Text="Ergebnis"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="2"
+                   Foreground="{StaticResource HeaderBrush}"
+                   FontSize="{StaticResource HeaderSize}"/>
+        <TextBlock x:Name="TxtResult" Grid.Row="1"
+                   Grid.Column="10"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="5"
+                   Foreground="{StaticResource TextBrush}"
+                   FontSize="{StaticResource DataSize}"
+                   Text="{Binding Path=Result}"/>
+        <Rectangle Grid.Column="10"
+                   Grid.Row="0"
+                   Stroke="{StaticResource BorderBrush}"
+                   Height="1"
+                   VerticalAlignment="Bottom"/>
+    </Grid>
+</UserControl>

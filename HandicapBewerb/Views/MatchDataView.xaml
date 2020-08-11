@@ -1,0 +1,167 @@
+﻿<UserControl x:Class="HandicapBewerb.Views.MatchDataView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             mc:Ignorable="d" 
+             d:DesignHeight="700"
+             d:DesignWidth="1200">
+    <UserControl.Resources>
+        <system:Double x:Key="IconSize">25</system:Double>
+        <Style
+            x:Key="IconStyle"
+            BasedOn="{StaticResource MahApps.Styles.Button.Square.Accent}"
+            TargetType="Button">
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Margin" Value="0,0,20,0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Background="Transparent">
+                            <ContentPresenter
+                                x:Name="MyContentPresenter"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Content="{TemplateBinding Content}" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="DarkRed" />
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Accent}" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Gray8}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style
+            x:Key="DeleteMatch"
+            BasedOn="{StaticResource IconStyle}"
+            TargetType="Button">
+            <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Remove, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Remove, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Remove, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style
+            x:Key="Refresh"
+            BasedOn="{StaticResource IconStyle}"
+            TargetType="Button">
+            <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Refresh, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Refresh, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Refresh, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <Grid Margin="0,10,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0"
+                    Grid.Column="0"
+                    HorizontalAlignment="Left"
+                    Margin="5,0,0,5"
+                    Orientation="Horizontal">
+            <Button Style="{DynamicResource DeleteMatch}"
+                    ToolTip="Markierte Matches entfernen!" 
+                    Cursor="Hand"
+                    Command="{Binding OnDeleteMatch}"
+                    Margin="10,0,0,0"/>
+            <Button Style="{DynamicResource Refresh}"
+                    ToolTip="Markierte Matches entfernen!" 
+                    Cursor="Hand"
+                    Command="{Binding OnRefresh}"
+                    Margin="10,0,0,0"/>
+        </StackPanel>
+        <DataGrid Grid.Row="1"
+                  Grid.Column="0"
+                  Margin="5"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding Matches, Mode=TwoWay}"
+                  RowHeaderWidth="0"
+                  Style="{DynamicResource MahApps.Styles.DataGrid.Azure}"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto"
+                  SelectedItem="{Binding Selection, Mode=OneWayToSource}">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Match Löschen">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding MatchToDelete,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Binding="{Binding MatchId}"
+                                    EditingElementStyle="{StaticResource MahApps.Styles.TextBox.DataGrid.Editing}"
+                                    Header="Match Id" 
+                                    IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Date, StringFormat=\{0:dd.MM.yy HH:mm\}}"
+                                    EditingElementStyle="{StaticResource MahApps.Styles.TextBox.DataGrid.Editing}"
+                                    Header="Datum"
+                                    Width="*"
+                                    IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid Grid.Row="1"
+                  Grid.Column="1"
+                  Margin="5"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding MatchResults}"
+                  RowHeaderWidth="0"
+                  Style="{DynamicResource MahApps.Styles.DataGrid.Azure}"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding MatchResultId}"
+                                    EditingElementStyle="{StaticResource MahApps.Styles.TextBox.DataGrid.Editing}"
+                                    Header="Match Ergebnis Id" 
+                                    IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Position}"
+                                    Header="Position" 
+                                    IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding UserName}"
+                                    Header="Name" 
+                                    IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Round}"
+                                    Header="Runde" 
+                                    IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Result}"
+                                    Header="Ergebnis" 
+                                    IsReadOnly="True"
+                                    Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

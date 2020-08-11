@@ -1,0 +1,258 @@
+﻿<UserControl x:Class="HandicapBewerb.Views.UserDataView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="700"
+             d:DesignWidth="1200">
+    <UserControl.Resources>
+        <system:Double x:Key="IconSize">25</system:Double>
+        <Style
+            x:Key="IconStyle"
+            BasedOn="{StaticResource MahApps.Styles.Button.Square.Accent}"
+            TargetType="Button">
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Margin" Value="0,0,20,0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Background="Transparent">
+                            <ContentPresenter
+                                x:Name="MyContentPresenter"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Content="{TemplateBinding Content}" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="DarkRed" />
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Accent}" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Gray8}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style
+            x:Key="SaveUser"
+            BasedOn="{StaticResource IconStyle}"
+            TargetType="Button">
+            <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Save, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Save, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Save, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style
+            x:Key="DiscardUser"
+            BasedOn="{StaticResource IconStyle}"
+            TargetType="Button">
+            <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Close, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Close, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Close, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style
+            x:Key="AddUser"
+            BasedOn="{StaticResource IconStyle}"
+            TargetType="Button">
+            <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Add, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Add, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Add, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style
+            x:Key="DeleteUser"
+            BasedOn="{StaticResource IconStyle}"
+            TargetType="Button">
+            <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Remove, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Remove, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Remove, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style
+            x:Key="AddRound"
+            BasedOn="{StaticResource IconStyle}"
+            TargetType="Button">
+            <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Add, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Add, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Add, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style
+            x:Key="DeleteRound"
+            BasedOn="{StaticResource IconStyle}"
+            TargetType="Button">
+            <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Remove, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Remove, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Remove, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <Grid Margin="0,10,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0"
+                    Grid.Column="0"
+                    HorizontalAlignment="Left"
+                    Margin="5,0,0,5"
+                    Orientation="Horizontal">
+            <Button Style="{DynamicResource SaveUser}"
+                    ToolTip="Schützen speichern" 
+                    Cursor="Hand"
+                    Command="{Binding OnSaveUser}"
+                    Margin="10,0,0,0"
+                    Visibility="{Binding EditingVisibility}"/>
+            <Button Style="{DynamicResource DiscardUser}"
+                    ToolTip="Schützen nicht speichern" 
+                    Cursor="Hand"
+                    Command="{Binding OnDiscardUser}"
+                    Margin="10,0,20,0"
+                    Visibility="{Binding EditingVisibility}"/>
+            <Button Style="{DynamicResource AddUser}"
+                    ToolTip="Neuen Spieler hinzufügen!" 
+                    Cursor="Hand"
+                    Command="{Binding OnAddUser}"
+                    Margin="10,0,0,0"
+                    IsEnabled="{Binding IsUserEditingEnabled}"/>
+            <Button Style="{DynamicResource DeleteUser}"
+                    ToolTip="Markierte Spieler entfernen!" 
+                    Cursor="Hand"
+                    Command="{Binding OnDeleteUser}"
+                    Margin="10,0,0,0"
+                    IsEnabled="{Binding IsUserEditingEnabled}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="0"
+                    Grid.Column="1"
+                    HorizontalAlignment="Left"
+                    Margin="5,0,0,5"
+                    Orientation="Horizontal">
+            <Button Style="{DynamicResource AddRound}"
+                    ToolTip="Neuen Spieler hinzufügen!" 
+                    Cursor="Hand"
+                    Command="{Binding OnAddRound}"
+                    Margin="10,0,0,0"
+                    IsEnabled="{Binding IsRoundEditingEnabled}"/>
+            <Button Style="{DynamicResource DeleteRound}"
+                    ToolTip="Markierte Spieler entfernen!" 
+                    Cursor="Hand"
+                    Command="{Binding OnDeleteRound}"
+                    Margin="10,0,0,0"
+                    IsEnabled="{Binding IsRoundEditingEnabled}"/>
+        </StackPanel>
+        <DataGrid Grid.Row="1"
+                  Grid.Column="0"
+                  Margin="5"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding Users, Mode=TwoWay}"
+                  RowHeaderWidth="0"
+                  Style="{DynamicResource MahApps.Styles.DataGrid.Azure}"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto"
+                  CellEditEnding="DataGrid_UserOnCellEditEnding"
+                  SelectedItem="{Binding Selection, Mode=OneWayToSource}"
+                  IsEnabled="{Binding IsUsersEnabled}"
+                  IsReadOnly="{Binding IsUsersReadOnly}">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Spieler Löschen">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding UsersToDelete,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Binding="{Binding UserId}"
+                                    EditingElementStyle="{StaticResource MahApps.Styles.TextBox.DataGrid.Editing}"
+                                    Header="Spieler Id" 
+                                    IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Name}"
+                                    EditingElementStyle="{StaticResource MahApps.Styles.TextBox.DataGrid.Editing}"
+                                    Header="Name"
+                                    Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid Grid.Row="1"
+                  Grid.Column="1"
+                  Margin="5"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding Rounds}"
+                  RowHeaderWidth="0"
+                  Style="{DynamicResource MahApps.Styles.DataGrid.Azure}"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto"
+                  CellEditEnding="DataGrid_OnCellEditEnding"
+                  BeginningEdit="DataGrid_OnBeginningEdit"
+                  IsReadOnly="{Binding IsRoundsReadOnly}"
+                  SelectedItem="{Binding SelectedRound, Mode=OneWayToSource}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding RoundId}"
+                                    EditingElementStyle="{StaticResource MahApps.Styles.TextBox.DataGrid.Editing}"
+                                    Header="Runden Id" 
+                                    IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Date, StringFormat=\{0:dd.MM.yy HH:mm\}}"
+                                    Header="Datum" 
+                                    IsReadOnly="True"/>
+                <mah:DataGridNumericUpDownColumn Binding="{Binding Points}"
+                                                 Minimum="0"
+                                                 Width="*"
+                                                 TextAlignment="Left"
+                                                 Header="Punkte"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

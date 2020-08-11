@@ -1,0 +1,168 @@
+﻿<UserControl
+    x:Class="HandicapBewerb.Views.HomeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:userControls="clr-namespace:HandicapBewerb.Views.UserControls"
+    d:DesignHeight="700"
+    d:DesignWidth="1200"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+
+            <sys:Double x:Key="IconSize">25</sys:Double>
+            <GridLength x:Key="IconBarSize">25</GridLength>
+            <Style
+            x:Key="IconStyle"
+            BasedOn="{StaticResource MahApps.Styles.Button.Square}"
+            TargetType="Button">
+                <Setter Property="Foreground" Value="{DynamicResource BlackBrush}" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="Margin" Value="0,0,20,0" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Grid Background="Transparent">
+                                <ContentPresenter
+                                x:Name="MyContentPresenter"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Content="{TemplateBinding Content}" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Foreground" Value="DarkRed" />
+                    </Trigger>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Accent}" />
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Gray8}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+
+            <Style
+            x:Key="AddPlayers"
+            BasedOn="{StaticResource IconStyle}"
+            TargetType="Button">
+                <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Add, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Add, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=Add, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid x:Name="TheContentGrid" Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="{StaticResource IconBarSize}" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="100" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel
+            Grid.Row="0"
+            Margin="8,0,0,0"
+            Orientation="Horizontal">
+            <Button
+                Command="{Binding AddPlayers}"
+                Style="{DynamicResource AddPlayers}"
+                ToolTip="Spieler hinzufügen" 
+                IsEnabled="{Binding IsAddPlayersEnabled}"/>
+
+        </StackPanel>
+        <mah:ProgressRing
+            Grid.Row="0"
+            Width="10"
+            Height="10"
+            HorizontalAlignment="Right"
+            IsActive="{Binding IsProgressActive}"
+            ToolTip="{Binding ProgressToolTip}" />
+        <Rectangle
+            Grid.Row="1"
+            Height="1"
+            Margin="8,0,8,0"
+            Fill="Black" />
+
+        <Grid Grid.Row="2"
+              Margin="20,0,20,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" 
+                        Orientation="Vertical"
+                        Margin="5"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+                <Button Content="Neues Spiel"
+                        Style="{StaticResource MahApps.Styles.Button.Square.Accent}" 
+                        Margin="0,0,0,5"
+                        Command="{Binding NewGame}"/>
+                <Button Content="Schützen hinzufügen / entfernen"
+                        Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
+                        Command="{Binding AddPlayers}"
+                        IsEnabled="{Binding IsAddPlayersEnabled}"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2" 
+                        Orientation="Vertical"
+                        Margin="5"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+                <Button Content="Match abschließen"
+                        Style="{StaticResource MahApps.Styles.Button.Square.Accent}" 
+                        Margin="0,0,0,5"
+                        Command="{Binding SaveAll}"
+                        IsEnabled="{Binding IsSaveAllEnabled}"/>
+                <Button Content="Platzierungen berechnen"
+                        Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
+                        Command="{Binding SortPositions}"
+                        IsEnabled="{Binding IsSortPositionsEnabled}"/>
+            </StackPanel>
+        </Grid>
+
+        <ScrollViewer x:Name="UserDataScroll" 
+                      Grid.Row="3"
+                      HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto"
+                      CanContentScroll="True"
+                      PreviewMouseWheel="UserDataControl_OnPreviewMouseWheel">
+            <ItemsControl BorderBrush="Black"
+                          BorderThickness="1"
+                          ItemsSource="{Binding UserDataControls}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <userControls:UserDataControl />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
