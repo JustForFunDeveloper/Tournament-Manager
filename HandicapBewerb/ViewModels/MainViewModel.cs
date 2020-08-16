@@ -2,14 +2,14 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using HandicapBewerb.Core.Data;
-using HandicapBewerb.ViewModels.Handler;
+using TournamentManager.Core.Data;
+using TournamentManager.ViewModels.Handler;
 using JetBrains.Annotations;
 using MahApps.Metro.Controls;
 using MahApps.Metro.IconPacks;
 using PropertyChanged;
 
-namespace HandicapBewerb.ViewModels
+namespace TournamentManager.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {

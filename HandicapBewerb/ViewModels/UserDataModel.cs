@@ -5,12 +5,12 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using HandicapBewerb.Core.Data;
-using HandicapBewerb.Core.Handler;
-using HandicapBewerb.DataModels.DbModels;
-using HandicapBewerb.ViewModels.Handler;
+using TournamentManager.Core.Data;
+using TournamentManager.Core.Handler;
+using TournamentManager.DataModels.DbModels;
+using TournamentManager.ViewModels.Handler;
 
-namespace HandicapBewerb.ViewModels
+namespace TournamentManager.ViewModels
 {
     public class UserDataModel : INotifyPropertyChanged
     {
@@ -58,7 +58,7 @@ namespace HandicapBewerb.ViewModels
             {
                 if (value != null)
                 {
-                    Rounds = new ObservableCollection<Round>(DBHandler.GetUserRounds(value));
+                    Rounds = new ObservableCollection<Round>(DbHandler.GetUserRounds(value));
                 }
                 else
                 {
@@ -130,7 +130,7 @@ namespace HandicapBewerb.ViewModels
 
         private void OnUserDataViewOpen(object obj)
         {
-            Users = new ObservableCollection<User>(DBHandler.GetUsersIncludingRounds());
+            Users = new ObservableCollection<User>(DbHandler.GetUsersIncludingRounds());
             Rounds = new ObservableCollection<Round>();
 
             if (ApplicationData.IsAdminLoggedIn)
@@ -171,16 +171,16 @@ namespace HandicapBewerb.ViewModels
         private void OnSaveUserCommand()
         {
             Selection.Rounds = Rounds;
-            DBHandler.UpdateUser(Selection);
+            DbHandler.UpdateUser(Selection);
             if (_roundsToDelete.Count > 0)
             {
-                DBHandler.RemoveRounds(_roundsToDelete, Selection);
+                DbHandler.RemoveRounds(_roundsToDelete, Selection);
                 _roundsToDelete = new List<Round>();
             }
 
             if (_editedUser != null)
             {
-                DBHandler.UpdateUser(_editedUser);
+                DbHandler.UpdateUser(_editedUser);
                 _editedUser = null;
             }
 
@@ -259,14 +259,14 @@ namespace HandicapBewerb.ViewModels
                 Mediator.NotifyColleagues(MediatorGlobal.ErrorDialog, new List<string>()
                 {
                     "Zugriff verweigert",
-                    "Um diesen Vorgang durchzführen muss man angemeldet sein!"
+                    "Um diesen Vorgang durchzuführen muss man angemeldet sein!"
                 });
                 return;
             }
 
             try
             {
-                DBHandler.deleteUsers(Users.ToList());
+                DbHandler.DeleteUsers(Users.ToList());
                 OnUserDataViewOpen(null);
             }
             catch (Exception e)
@@ -330,7 +330,7 @@ namespace HandicapBewerb.ViewModels
                 Mediator.NotifyColleagues(MediatorGlobal.ErrorDialog, new List<string>()
                 {
                     "Zugriff verweigert",
-                    "Um diesen Vorgang durchzführen muss man angemeldet sein!"
+                    "Um diesen Vorgang durchzuführen muss man angemeldet sein!"
                 });
                 return;
             }

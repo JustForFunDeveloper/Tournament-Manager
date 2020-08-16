@@ -1,7 +1,7 @@
 ﻿using System.Windows;
-using HandicapBewerb.Core;
+using TournamentManager.Core;
 
-namespace HandicapBewerb
+namespace TournamentManager
 {
     /// <summary>
     /// Interaction logic for App.xaml

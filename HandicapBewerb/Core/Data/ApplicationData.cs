@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Media.Converters;
-using HandicapBewerb.Views.UserControls;
+using TournamentManager.Views.UserControls;
 
-namespace HandicapBewerb.Core.Data
+namespace TournamentManager.Core.Data
 {
     public static class ApplicationData
     {

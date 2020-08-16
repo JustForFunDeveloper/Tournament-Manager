@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace HandicapBewerb.Core.Handler
+namespace TournamentManager.Core.Handler
 {
     public static class ExtensionMethods
     {

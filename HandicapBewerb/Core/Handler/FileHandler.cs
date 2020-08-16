@@ -1,20 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using HandicapBewerb.DataModels.DbModels;
 
-namespace HandicapBewerb.Core.Handler
+namespace TournamentManager.Core.Handler
 {
     public class FileHandler
     {
         #region Public Properties
 
-        public string LocalPath1 { get; set; }
-        public string LocalPath2 { get; set; }
-        public string LocalPath3 { get; set; }
-        public List<string> FileEndings { get; set; }
         /// <summary>
         /// An event which is invoked as soon a exception occured.<para/>
         /// Used to log Exceptions in this Handler.
@@ -22,10 +15,6 @@ namespace HandicapBewerb.Core.Handler
         public event EventHandler<Exception> ExceptionEvent;
 
         #endregion
-
-        public FileHandler()
-        {
-        }
 
         #region Public Methods
 
@@ -69,7 +58,7 @@ namespace HandicapBewerb.Core.Handler
                     return 1;
 
                 DateTime dt = DateTime.Now;
-                string[] lines = { fileName, "Created at: " + dt.ToLocalTime().ToString() };
+                string[] lines = { fileName, "Created at: " + dt.ToLocalTime() };
 
                 if (withHeader)
                     File.WriteAllLines(path + fileName, lines);

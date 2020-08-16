@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace HandicapBewerb.Views
+namespace TournamentManager.Views
 {
     /// <summary>
     /// Interaction logic for AboutView.xaml

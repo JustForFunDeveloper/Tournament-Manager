@@ -1,13 +1,13 @@
 ﻿ using System;
 using System.Collections.Generic;
- using HandicapBewerb.Core.Data;
- using HandicapBewerb.Core.Handler;
- using HandicapBewerb.DataModels.DbModels;
- using HandicapBewerb.ViewModels.Handler;
+ using TournamentManager.Core.Data;
+ using TournamentManager.Core.Handler;
+ using TournamentManager.DataModels.DbModels;
+ using TournamentManager.ViewModels.Handler;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 
-namespace HandicapBewerb
+namespace TournamentManager
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -31,7 +31,7 @@ namespace HandicapBewerb
 
         private async void OnLoginDialog(object obj)
         {
-            LoginDialogData result = await this.ShowLoginAsync("Anmelden als Administrator", "Bitte gib dein Passwort ein.",
+            LoginDialogData result = await this.ShowLoginAsync("Anmelden als Administrator", "Bitte gib dein Passwort ein!",
                 new LoginDialogSettings
                 {
                     ColorScheme = this.MetroDialogOptions.ColorScheme,
@@ -60,31 +60,24 @@ namespace HandicapBewerb
             }
         }
 
-        //private void OnCustomDialog(object obj)
-        //{
-        //    if (obj == null)
-        //        return;
-        //    List<string> list = obj as List<string>;
-
-        //    if (list == null)
-        //        return;
-
-        //    if (list.Count != 3)
-        //        return;
-
-        //    CustomDialog(list[0], list[1], list[2]);
-        //}
-
         private async void OnAddUser(object obj)
         {
-            var result = await this.ShowInputAsync("Hallo", "Bitte gib den Namen ein.");
+
+            var mySettings = new MetroDialogSettings()
+            {
+                AffirmativeButtonText = "Ok",
+                NegativeButtonText = "Abbrechen",
+                AnimateShow = true,
+                AnimateHide = false
+            };
+            var result = await this.ShowInputAsync("Hallo", "Bitte gib deinen Namen ein!", mySettings);
 
             if (result == null) //user pressed cancel
                 return;
 
             try
             {
-                DBHandler.AddUser(result);
+                DbHandler.AddUser(result);
                 Mediator.NotifyColleagues((string)obj, null);
             }
             catch (Exception)
@@ -92,14 +85,21 @@ namespace HandicapBewerb
                 OnErrorDialog(new List<string>()
                 {
                     "Fehler",
-                    "Spieler existiert bereits, bitte wähle einen anderen Namen."
+                    "Spieler existiert bereits, bitte wähle einen anderen Namen!"
                 });
             }
         }
 
         private async void OnAddRound(object obj)
         {
-            var result = await this.ShowInputAsync("Hallo", "Bitte gib deine Punkte ein.");
+            var mySettings = new MetroDialogSettings()
+            {
+                AffirmativeButtonText = "Beenden",
+                NegativeButtonText = "Abbrechen",
+                AnimateShow = true,
+                AnimateHide = false
+            };
+            var result = await this.ShowInputAsync("Hallo", "Bitte gib deine Punkte ein!", mySettings);
 
             if (result == null) //user pressed cancel
                 return;
@@ -117,7 +117,7 @@ namespace HandicapBewerb
                 OnErrorDialog(new List<string>()
                 {
                     "Fehler",
-                    "Gib bitte einen korrekten Wert"
+                    "Gib bitte einen korrekten Wert an!"
                 });
             }
         }
@@ -156,7 +156,7 @@ namespace HandicapBewerb
                 AnimateHide = false
             };
             var result = await this.ShowMessageAsync(
-                "Handicap Statistik beenden",
+                "Tournament Manager beenden",
                 "Bist du dir sicher, dass du das Programm beenden willst?",
                 MessageDialogStyle.AffirmativeAndNegative, mySettings);
 

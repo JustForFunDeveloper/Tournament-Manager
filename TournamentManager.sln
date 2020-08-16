@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandicapBewerb", "HandicapBewerb\HandicapBewerb.csproj", "{751F70BF-165B-47E5-B9DF-A3E9750C8CB1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TournamentManager", "HandicapBewerb\TournamentManager.csproj", "{751F70BF-165B-47E5-B9DF-A3E9750C8CB1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

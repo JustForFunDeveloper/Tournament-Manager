@@ -1,4 +1,4 @@
-﻿namespace HandicapBewerb.DataModels
+﻿namespace TournamentManager.DataModels
 {
     public enum Status
     {

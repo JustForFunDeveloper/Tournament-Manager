@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HandicapBewerb.ViewModels.Interfaces
+namespace TournamentManager.ViewModels.Interfaces
 {
     interface ISettingsView
     {

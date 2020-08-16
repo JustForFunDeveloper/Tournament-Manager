@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace HandicapBewerb.Core.GlobalValues
+namespace TournamentManager.Core.GlobalValues
 {
     public static class LogicConstants
     {

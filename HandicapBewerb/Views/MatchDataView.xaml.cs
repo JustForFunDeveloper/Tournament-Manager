@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace HandicapBewerb.Views
+namespace TournamentManager.Views
 {
     /// <summary>
     /// Interaction logic for MatchDataView.xaml

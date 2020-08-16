@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using HandicapBewerb.Core.Handler;
+using TournamentManager.Core.Handler;
 
-namespace HandicapBewerb.ViewModels.Handler
+namespace TournamentManager.ViewModels.Handler
 {
     static public class Mediator
     {

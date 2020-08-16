@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace HandicapBewerb.ViewModels.Handler
+namespace TournamentManager.ViewModels.Handler
 {
     // Not used at the moment, just for testing purposes.
     public static class PropertyChangedNotificationInterceptor

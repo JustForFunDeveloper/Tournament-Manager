@@ -4,12 +4,12 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
-using HandicapBewerb.Core.Data;
-using HandicapBewerb.Core.Handler;
-using HandicapBewerb.DataModels.DbModels;
-using HandicapBewerb.ViewModels.Handler;
+using TournamentManager.Core.Data;
+using TournamentManager.Core.Handler;
+using TournamentManager.DataModels.DbModels;
+using TournamentManager.ViewModels.Handler;
 
-namespace HandicapBewerb.ViewModels
+namespace TournamentManager.ViewModels
 {
     public class AddPlayerViewModel : INotifyPropertyChanged
     {
@@ -28,7 +28,7 @@ namespace HandicapBewerb.ViewModels
 
         private void OnAddPlayerViewOpen(object obj)
         {
-            Users = new ObservableCollection<User>(DBHandler.GetUsers());
+            Users = new ObservableCollection<User>(DbHandler.GetUsers());
 
             var userDataControls = ApplicationData.UserDataControls;
             if (userDataControls != null)
@@ -121,14 +121,14 @@ namespace HandicapBewerb.ViewModels
                 Mediator.NotifyColleagues(MediatorGlobal.ErrorDialog, new List<string>()
                 {
                     "Zugriff verweigert",
-                    "Um diesen Vorgang durchzführen muss man angemeldet sein!"
+                    "Um diesen Vorgang durchzuführen muss man angemeldet sein!"
                 });
                 return;
             }
 
             try
             {
-                DBHandler.deleteUsers(Users.ToList());
+                DbHandler.DeleteUsers(Users.ToList());
                 OnAddPlayerViewOpen(null);
             }
             catch (Exception e)

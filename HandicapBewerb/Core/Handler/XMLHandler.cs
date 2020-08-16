@@ -3,7 +3,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace HandicapBewerb.Core.Handler
+namespace TournamentManager.Core.Handler
 {
     public class XmlHandler
     {

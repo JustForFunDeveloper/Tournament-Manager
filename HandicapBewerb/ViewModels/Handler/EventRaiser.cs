@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HandicapBewerb.ViewModels.Handler
+namespace TournamentManager.ViewModels.Handler
 {
     public static class EventRaiser
     {

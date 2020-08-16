@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace HandicapBewerb.ViewModels.Handler
+namespace TournamentManager.ViewModels.Handler
 {
     public class RelayCommand<T> : ICommand
     {

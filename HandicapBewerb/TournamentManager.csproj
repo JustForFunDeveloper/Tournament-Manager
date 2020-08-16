@@ -8,8 +8,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{751F70BF-165B-47E5-B9DF-A3E9750C8CB1}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>HandicapBewerb</RootNamespace>
-    <AssemblyName>HandicapBewerb</AssemblyName>
+    <RootNamespace>TournamentManager</RootNamespace>
+    <AssemblyName>TournamentManager</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -22,16 +22,23 @@
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
+    <UpdateRequired>true</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
+    <SupportUrl>https://github.com/JustForFunDeveloper/Tournament-Manager</SupportUrl>
+    <ErrorReportUrl>https://github.com/JustForFunDeveloper/Tournament-Manager/issues</ErrorReportUrl>
+    <TargetCulture>de-AT</TargetCulture>
+    <ProductName>Tournament-Manager</ProductName>
+    <PublisherName>JustForFunDeveloper</PublisherName>
+    <SuiteName>Tournament-Manager</SuiteName>
+    <MinimumRequiredVersion>1.1.0.0</MinimumRequiredVersion>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -288,17 +295,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Control\Controller.cs" />
     <Compile Include="Core\Data\ApplicationData.cs" />
-    <Compile Include="Core\Handler\DBHandler.cs" />
+    <Compile Include="Core\Handler\DbHandler.cs" />
     <Compile Include="Core\Handler\ExtensionMethods.cs" />
     <Compile Include="DataModels\DbModels\Match.cs" />
     <Compile Include="DataModels\DbModels\MatchResult.cs" />
     <Compile Include="DataModels\DbModels\Round.cs" />
     <Compile Include="DataModels\DbModels\User.cs" />
-    <Compile Include="Migrations\20200809190243_InitialCreation.cs" />
-    <Compile Include="Migrations\20200809190243_InitialCreation.designer.cs">
-      <DependentUpon>20200809190243_InitialCreation.cs</DependentUpon>
+    <Compile Include="DataModels\DbModels\UserMatch.cs" />
+    <Compile Include="Migrations\20200816074300_Initial.cs" />
+    <Compile Include="Migrations\20200816074300_Initial.designer.cs">
+      <DependentUpon>20200816074300_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ApplicationDbContextModelSnapshot.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
@@ -410,7 +417,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="HandicapBewerb_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -442,6 +448,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Control\" />
     <Folder Include="ValueConverter\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

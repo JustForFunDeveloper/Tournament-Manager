@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace HandicapBewerb.Views.UserControls
+namespace TournamentManager.Views.UserControls
 {
     public class CustomEventArgs : RoutedEventArgs
     {

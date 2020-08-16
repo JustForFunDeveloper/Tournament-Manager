@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-using HandicapBewerb.Core.GlobalValues;
+using TournamentManager.Core.GlobalValues;
 
-namespace HandicapBewerb.Core.Handler
+namespace TournamentManager.Core.Handler
 {
     [Flags]
     public enum LogLevel

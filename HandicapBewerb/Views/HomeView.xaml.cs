@@ -2,9 +2,9 @@
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using HandicapBewerb.Views.UserControls;
+using TournamentManager.Views.UserControls;
 
-namespace HandicapBewerb.Views
+namespace TournamentManager.Views
 {
     /// <summary>
     /// Interaction logic for HomeView.xaml

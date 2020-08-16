@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
-namespace HandicapBewerb.ViewModels.Common
+namespace TournamentManager.ViewModels.Common
 {
     public class PropertyChangedViewModel : INotifyPropertyChanged
     {

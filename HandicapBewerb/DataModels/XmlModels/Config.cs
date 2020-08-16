@@ -1,7 +1,7 @@
 ﻿using System.Xml.Serialization;
-using HandicapBewerb.Core.Handler;
+using TournamentManager.Core.Handler;
 
-namespace HandicapBewerb.DataModels.XmlModels
+namespace TournamentManager.DataModels.XmlModels
 {
     [XmlRoot("Data_Handler_Tool_Config")]
     public class Config

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="HandicapBewerb.Views.UserControls.UserDataControl"
+﻿<UserControl x:Class="TournamentManager.Views.UserControls.UserDataControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -186,7 +186,9 @@
                            TextAlignment="Center"
                            FontSize="{StaticResource DataSize}"
                            ValueChanged="NumericUpDown_OnValueChanged"
-                           IsEnabled="{Binding Path=IsInputEnabled}"/>
+                           IsEnabled="{Binding Path=IsInputEnabled}"
+                           Culture="de-DE"
+                           StringFormat="F1"/>
         <TextBlock Grid.Row="0"
                    Grid.Column="10"
                    Text="Ergebnis"

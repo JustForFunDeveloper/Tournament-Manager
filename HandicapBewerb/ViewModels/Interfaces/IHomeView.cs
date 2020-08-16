@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HandicapBewerb.ViewModels.Interfaces
+namespace TournamentManager.ViewModels.Interfaces
 {
     interface IHomeView
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HandicapBewerb.DataModels.DbModels
+namespace TournamentManager.DataModels.DbModels
 {
     public class Round
     {

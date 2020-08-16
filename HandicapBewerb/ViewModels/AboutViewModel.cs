@@ -3,10 +3,10 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Windows.Input;
-using HandicapBewerb.Core.Handler;
-using HandicapBewerb.ViewModels.Handler;
+using TournamentManager.Core.Handler;
+using TournamentManager.ViewModels.Handler;
 
-namespace HandicapBewerb.ViewModels
+namespace TournamentManager.ViewModels
 {
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public class AboutViewModel : INotifyPropertyChanged

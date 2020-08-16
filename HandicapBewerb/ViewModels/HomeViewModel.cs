@@ -7,14 +7,14 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using HandicapBewerb.Core.Data;
-using HandicapBewerb.Core.Handler;
-using HandicapBewerb.DataModels.DbModels;
-using HandicapBewerb.ViewModels.Handler;
-using HandicapBewerb.Views.UserControls;
+using TournamentManager.Core.Data;
+using TournamentManager.Core.Handler;
+using TournamentManager.DataModels.DbModels;
+using TournamentManager.ViewModels.Handler;
+using TournamentManager.Views.UserControls;
 using JetBrains.Annotations;
 
-namespace HandicapBewerb.ViewModels
+namespace TournamentManager.ViewModels
 {
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public class HomeViewModel : INotifyPropertyChanged
@@ -31,6 +31,7 @@ namespace HandicapBewerb.ViewModels
         private ICommand _sortPositions;
 
         private readonly string DOUBLE_FORMAT = "##.#0";
+        private readonly string DOUBLE_FORMAT_ROUNDS = "##.0";
         private readonly string DATE_FORMAT = "dd.MM.yy HH:mm";
 
         #endregion
@@ -190,7 +191,7 @@ namespace HandicapBewerb.ViewModels
             try
             {
                 SortList();
-                DBHandler.SaveMatch(ApplicationData.UserDataControls);
+                DbHandler.SaveMatch(ApplicationData.UserDataControls);
                 IsSaveAllEnabled = false;
                 IsAddPlayersEnabled = false;
                 IsSortPositionsEnabled = false;
@@ -236,7 +237,7 @@ namespace HandicapBewerb.ViewModels
         {
             List<UserDataControl> userDataControls = new List<UserDataControl>();
 
-            List<User> users = DBHandler.GetUsers();
+            List<User> users = DbHandler.GetUsers();
 
             foreach (var user in users)
             {
@@ -266,7 +267,7 @@ namespace HandicapBewerb.ViewModels
         {
             userDataControl.UserName = user.Name;
 
-            List<Round> rounds = DBHandler.GetLastThreeRoundsFromUserOrderedByDate(user.UserId);
+            List<Round> rounds = DbHandler.GetLastThreeRoundsFromUserOrderedByDate(user.UserId);
 
             CultureInfo cultureInfo = CultureInfo.CurrentCulture;
 
@@ -277,7 +278,7 @@ namespace HandicapBewerb.ViewModels
             {
                 nullValueSum += rounds[0].Points;
                 meanCounter++;
-                userDataControl.FirstOldest = rounds[0].Points.ToString(DOUBLE_FORMAT);
+                userDataControl.FirstOldest = rounds[0].Points.ToString(DOUBLE_FORMAT_ROUNDS);
                 userDataControl.FirstOldestDateTime = rounds[0].Date.ToString(DATE_FORMAT, cultureInfo);
             }
 
@@ -285,7 +286,7 @@ namespace HandicapBewerb.ViewModels
             {
                 nullValueSum += rounds[1].Points;
                 meanCounter++;
-                userDataControl.SecondOldest = rounds[1].Points.ToString(DOUBLE_FORMAT);
+                userDataControl.SecondOldest = rounds[1].Points.ToString(DOUBLE_FORMAT_ROUNDS);
                 userDataControl.SecondOldestDateTime = rounds[1].Date.ToString(DATE_FORMAT, cultureInfo);
             }
 
@@ -293,7 +294,7 @@ namespace HandicapBewerb.ViewModels
             {
                 nullValueSum += rounds[2].Points;
                 meanCounter++;
-                userDataControl.ThirdOldest = rounds[2].Points.ToString(DOUBLE_FORMAT);
+                userDataControl.ThirdOldest = rounds[2].Points.ToString(DOUBLE_FORMAT_ROUNDS);
                 userDataControl.ThirdOldestDateTime = rounds[2].Date.ToString(DATE_FORMAT, cultureInfo);
             }
 

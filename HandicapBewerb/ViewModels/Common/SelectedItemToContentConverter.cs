@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 
-namespace HandicapBewerb.ViewModels.Common
+namespace TournamentManager.ViewModels.Common
 {
     class SelectedItemToContentConverter : IMultiValueConverter
     {

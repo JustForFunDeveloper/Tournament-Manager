@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HandicapBewerb.DataModels.DbModels
+namespace TournamentManager.DataModels.DbModels
 {
     public class Match
     {
@@ -13,5 +13,6 @@ namespace HandicapBewerb.DataModels.DbModels
         public bool MatchToDelete { get; set; }
 
         public ICollection<MatchResult> MatchResults{ get; set; }
+        public ICollection<UserMatch> UserMatches { get; set; }
     }
 }

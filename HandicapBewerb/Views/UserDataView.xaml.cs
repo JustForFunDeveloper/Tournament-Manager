@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Windows.Controls;
-using HandicapBewerb.DataModels.DbModels;
-using HandicapBewerb.ViewModels.Handler;
+using TournamentManager.DataModels.DbModels;
+using TournamentManager.ViewModels.Handler;
 using MahApps.Metro.Controls;
 
-namespace HandicapBewerb.Views
+namespace TournamentManager.Views
 {
     /// <summary>
     /// Interaction logic for UserDataView.xaml

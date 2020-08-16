@@ -1,7 +1,7 @@
-﻿<Application x:Class="HandicapBewerb.App"
+﻿<Application x:Class="TournamentManager.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:HandicapBewerb"
+             xmlns:local="clr-namespace:TournamentManager"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>

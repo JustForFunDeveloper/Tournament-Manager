@@ -1,4 +1,4 @@
-﻿namespace HandicapBewerb.ViewModels.Handler
+﻿namespace TournamentManager.ViewModels.Handler
 {
     public class MediatorGlobal
     {

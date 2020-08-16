@@ -1,40 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using HandicapBewerb.Core.Data;
-using HandicapBewerb.DataModels.DbModels;
-using HandicapBewerb.Views.UserControls;
+using System.Runtime.CompilerServices;
+using TournamentManager.Core.Data;
+using TournamentManager.DataModels.DbModels;
+using TournamentManager.Views.UserControls;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
-namespace HandicapBewerb.Core.Handler
+namespace TournamentManager.Core.Handler
 {
-    public static class DBHandler
+    public static class DbHandler
     {
-        public static void deleteUsers(List<User> users)
-        {
-            using (var db = new ApplicationDbContext())
-            {
-                foreach (var user in users)
-                {
-                    if (user.UsersToDelete)
-                    {
-                        var queryable = db.Users.Include("Rounds").Single(u => u.UserId.Equals(user.UserId));
-                        db.Rounds.RemoveRange(queryable.Rounds);
-                        db.Users.Remove(queryable);
-                        db.SaveChanges();
-
-                        if (user.IsSelected)
-                        {
-                            ApplicationData.CurrentSelectedUser.Remove(user.UserId);
-                            var index = ApplicationData.UserDataControls.FindIndex(u => u.UserId.Equals(user.UserId));
-                            ApplicationData.UserDataControls.RemoveAt(index);
-                        }
-                    }
-                }
-            }
-        }
-
         public static void Migrate()
         {
 
@@ -138,11 +115,44 @@ namespace HandicapBewerb.Core.Handler
                 {
                     Name = name,
                     Rounds = new List<Round>(),
-                    Matches = new List<Match>()
+                    UserMatches = new List<UserMatch>()
                 };
 
                 db.Users.Add(user);
                 db.SaveChanges();
+            }
+        }
+
+        public static void UpdateUser(User user)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                db.Users.Update(user);
+                db.SaveChanges();
+            }
+        }
+
+        public static void DeleteUsers(List<User> users)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                foreach (var user in users)
+                {
+                    if (user.UsersToDelete)
+                    {
+                        var queryable = db.Users.Include(u => u.Rounds).Single(u => u.UserId.Equals(user.UserId));
+                        db.Rounds.RemoveRange(queryable.Rounds);
+                        db.Users.Remove(queryable);
+                        db.SaveChanges();
+
+                        if (user.IsSelected)
+                        {
+                            ApplicationData.CurrentSelectedUser.Remove(user.UserId);
+                            var index = ApplicationData.UserDataControls.FindIndex(u => u.UserId.Equals(user.UserId));
+                            ApplicationData.UserDataControls.RemoveAt(index);
+                        }
+                    }
+                }
             }
         }
 
@@ -162,7 +172,7 @@ namespace HandicapBewerb.Core.Handler
             List<User> users;
             using (var db = new ApplicationDbContext())
             {
-                users = new List<User>(db.Users.Include("Rounds"));
+                users = new List<User>(db.Users.Include(u=>u.Rounds));
             }
 
             return users;
@@ -179,7 +189,7 @@ namespace HandicapBewerb.Core.Handler
             List<Round> rounds;
             using (var db = new ApplicationDbContext())
             {
-                rounds = db.Users.Include("Rounds").Single(u => u.UserId.Equals(user.UserId)).Rounds.ToList();
+                rounds = db.Users.Include(u=>u.Rounds).Single(u => u.UserId.Equals(user.UserId)).Rounds.ToList();
             }
 
             return rounds;
@@ -190,64 +200,11 @@ namespace HandicapBewerb.Core.Handler
             List<Round> rounds; 
             using (var db = new ApplicationDbContext())
             {
-                rounds = db.Users.Include("Rounds").First(u => u.UserId == userId).Rounds.OrderByDescending(r => r.Date)
+                rounds = db.Users.Include(u=>u.Rounds).First(u => u.UserId == userId).Rounds.OrderByDescending(r => r.Date)
                     .Take(3).ToList();
             }
 
             return rounds;
-        }
-
-        public static void SaveMatch(List<UserDataControl> userDataControls)
-        {
-            using (var db = new ApplicationDbContext())
-            {
-                List<MatchResult> matchResults = new List<MatchResult>();
-                foreach (var userDataControl in userDataControls)
-                {
-                    var round = new Round()
-                    {
-                        Date = DateTime.Now,
-                        Points = userDataControl.CurrentRound
-                    };
-                    var user = db.Users.Include("Rounds").Single(u => u.UserId.Equals(userDataControl.UserId));
-                    user.Rounds.Add(round);
-
-                    Double.TryParse(userDataControl.Result, out double parsedResult);
-                    Int32.TryParse(userDataControl.Position, out int parsedPosition);
-
-                    if (Double.IsNaN(parsedPosition))
-                    {
-                        parsedPosition = -9999;
-                    }
-
-
-                    matchResults.Add(new MatchResult()
-                    {
-                        Result = parsedResult,
-                        Position = parsedPosition,
-                        UserName = user.Name,
-                        Round = userDataControl.CurrentRound
-                    });
-                }
-
-                var match = new Match()
-                {
-                    Date = DateTime.Now,
-                    MatchResults = matchResults
-                };
-
-                db.Matches.Add(match);
-                db.SaveChanges();
-            }
-        }
-
-        public static void UpdateUser(User user)
-        {
-            using (var db = new ApplicationDbContext())
-            {
-                db.Users.Update(user);
-                db.SaveChanges();
-            }
         }
 
         public static void RemoveRounds(List<Round> roundsToDelete, User user)
@@ -267,6 +224,83 @@ namespace HandicapBewerb.Core.Handler
             }
         }
 
+        public static void SaveMatch(List<UserDataControl> userDataControls)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                List<MatchResult> matchResults = new List<MatchResult>();
+                foreach (var userDataControl in userDataControls)
+                {
+                    var round = new Round()
+                    {
+                        Date = DateTime.Now,
+                        Points = userDataControl.CurrentRound
+                    };
+                    var user = db.Users
+                        .Include(u => u.Rounds)
+                        .Include(u => u.UserMatches)
+                        .Single(u => u.UserId.Equals(userDataControl.UserId));
+                    user.Rounds.Add(round);
+
+                    Double.TryParse(userDataControl.Result, out double parsedResult);
+                    Int32.TryParse(userDataControl.Position, out int parsedPosition);
+
+                    if (Double.IsNaN(parsedPosition))
+                    {
+                        parsedPosition = -9999;
+                    }
+
+                    matchResults.Add(new MatchResult()
+                    {
+                        Result = parsedResult,
+                        Position = parsedPosition,
+                        UserName = user.Name,
+                        Round = userDataControl.CurrentRound
+                    });
+                }
+
+                var match = new Match()
+                {
+                    Date = DateTime.Now,
+                    MatchResults = matchResults
+                };
+
+                foreach (var userDataControl in userDataControls)
+                {
+                    var user = db.Users
+                        .Include(u => u.Rounds)
+                        .Include(u => u.UserMatches)
+                        .Single(u => u.UserId.Equals(userDataControl.UserId));
+
+                    var userMatch = new UserMatch()
+                    {
+                        Match = match,
+                        User = user
+                    };
+                    user.UserMatches.Add(userMatch);
+                }
+
+                db.SaveChanges();
+            }
+        }
+
+        public static void DeleteMatches(List<Match> matches)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                foreach (var match in matches)
+                {
+                    if (match.MatchToDelete)
+                    {
+                        var queryable = db.Matches.Include(m=>m.MatchResults).Single(m => m.MatchId.Equals(match.MatchId));
+                        db.MatchResults.RemoveRange(queryable.MatchResults);
+                        db.Matches.Remove(queryable);
+                        db.SaveChanges();
+                    }
+                }
+            }
+        }
+
         public static List<MatchResult> GetMatchResults(Match match)
         {
             if (match == null)
@@ -277,7 +311,7 @@ namespace HandicapBewerb.Core.Handler
             List<MatchResult> matchResults;
             using (var db = new ApplicationDbContext())
             {
-                matchResults = db.Matches.Include("MatchResults").Single(m => m.MatchId.Equals(match.MatchId)).MatchResults.ToList();
+                matchResults = db.Matches.Include(m=>m.MatchResults).Single(m => m.MatchId.Equals(match.MatchId)).MatchResults.ToList();
             }
 
             return matchResults;
@@ -288,26 +322,18 @@ namespace HandicapBewerb.Core.Handler
             List<Match> matches;
             using (var db = new ApplicationDbContext())
             {
-                matches = new List<Match>(db.Matches.Include("MatchResults"));
+                matches = new List<Match>(db.Matches.Include(m=>m.MatchResults));
             }
 
             return matches;
         }
 
-        public static void deleteMatches(List<Match> matches)
+        public static List<Match> GetAllMatchesFromUser(User user)
         {
             using (var db = new ApplicationDbContext())
             {
-                foreach (var match in matches)
-                {
-                    if (match.MatchToDelete)
-                    {
-                        var queryable = db.Matches.Include("MatchResults").Single(m => m.MatchId.Equals(match.MatchId));
-                        db.MatchResults.RemoveRange(queryable.MatchResults);
-                        db.Matches.Remove(queryable);
-                        db.SaveChanges();
-                    }
-                }
+                var myUser = db.Users.Include(m => m.UserMatches).Single(u => u.UserId.Equals(user.UserId));
+                return myUser.UserMatches.Select(userMatch => userMatch.Match).ToList();
             }
         }
     }

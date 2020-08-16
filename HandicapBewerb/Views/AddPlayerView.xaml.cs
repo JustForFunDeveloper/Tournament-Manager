@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace HandicapBewerb.Views
+namespace TournamentManager.Views
 {
     /// <summary>
     /// Interaction logic for AddPlayerView.xaml

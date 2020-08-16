@@ -4,12 +4,12 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
-using HandicapBewerb.Core.Data;
-using HandicapBewerb.Core.Handler;
-using HandicapBewerb.DataModels.DbModels;
-using HandicapBewerb.ViewModels.Handler;
+using TournamentManager.Core.Data;
+using TournamentManager.Core.Handler;
+using TournamentManager.DataModels.DbModels;
+using TournamentManager.ViewModels.Handler;
 
-namespace HandicapBewerb.ViewModels
+namespace TournamentManager.ViewModels
 {
     public class MatchDataModel : INotifyPropertyChanged
     {
@@ -45,7 +45,7 @@ namespace HandicapBewerb.ViewModels
             {
                 if (value != null)
                 {
-                    MatchResults = new ObservableCollection<MatchResult>(DBHandler.GetMatchResults(value));
+                    MatchResults = new ObservableCollection<MatchResult>(DbHandler.GetMatchResults(value));
                 }
                 else
                 {
@@ -72,7 +72,7 @@ namespace HandicapBewerb.ViewModels
 
         private void RefreshData()
         {
-            Matches = new ObservableCollection<Match>(DBHandler.GetMatchesIncludingResults());
+            Matches = new ObservableCollection<Match>(DbHandler.GetMatchesIncludingResults());
             MatchResults = new ObservableCollection<MatchResult>();
         }
 
@@ -101,14 +101,14 @@ namespace HandicapBewerb.ViewModels
                 Mediator.NotifyColleagues(MediatorGlobal.ErrorDialog, new List<string>()
                 {
                     "Zugriff verweigert",
-                    "Um diesen Vorgang durchzführen muss man angemeldet sein!"
+                    "Um diesen Vorgang durchzuführen muss man angemeldet sein!"
                 });
                 return;
             }
 
             try
             {
-                DBHandler.deleteMatches(Matches.ToList());
+                DbHandler.DeleteMatches(Matches.ToList());
                 RefreshData();
             }
             catch (Exception e)
