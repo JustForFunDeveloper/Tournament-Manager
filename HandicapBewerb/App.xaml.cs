@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using AutoUpdaterDotNET;
 using TournamentManager.Core;
 
 namespace TournamentManager
@@ -13,7 +12,6 @@ namespace TournamentManager
         {
             // ReSharper disable once ObjectCreationAsStatement
             new Logic();
-            AutoUpdater.Start("http://rbsoft.org/updates/AutoUpdaterTest.xml");
         }
     }
 }

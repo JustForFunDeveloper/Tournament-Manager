@@ -1,9 +1,10 @@
-﻿ using System;
+﻿using System;
 using System.Collections.Generic;
- using TournamentManager.Core.Data;
- using TournamentManager.Core.Handler;
- using TournamentManager.DataModels.DbModels;
- using TournamentManager.ViewModels.Handler;
+using AutoUpdaterDotNET;
+using TournamentManager.Core.Data;
+using TournamentManager.Core.Handler;
+using TournamentManager.DataModels.DbModels;
+using TournamentManager.ViewModels.Handler;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 
@@ -22,6 +23,8 @@ namespace TournamentManager
         {
             InitializeComponent();
             _mainView = this;
+            AutoUpdater.ReportErrors = true;
+            AutoUpdater.Start("http://rbsoft.org/updates/AutoUpdaterTest.xml");
             Mediator.Register(MediatorGlobal.AddUser, OnAddUser);
             Mediator.Register(MediatorGlobal.AddRound, OnAddRound);
             Mediator.Register(MediatorGlobal.ErrorDialog, OnErrorDialog);
