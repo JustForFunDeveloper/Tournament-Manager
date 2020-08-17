@@ -85,6 +85,9 @@
             <DataTemplate DataType="{x:Type viewModels1:MatchDataModel}">
                 <views1:MatchDataView DataContext="{Binding}" />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels1:PlayerStatisticModel}">
+                <views1:PlayerStatisticView DataContext="{Binding}" />
+            </DataTemplate>
         </Grid.Resources>
 
         <mah:HamburgerMenu

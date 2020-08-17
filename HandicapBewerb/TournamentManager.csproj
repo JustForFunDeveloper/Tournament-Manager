@@ -84,6 +84,12 @@
     <Reference Include="JetBrains.Annotations, Version=10.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.10.2.1\lib\net\JetBrains.Annotations.dll</HintPath>
     </Reference>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=2.0.0.0, Culture=neutral, PublicKeyToken=51482d6f650b2b3f, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.2.2.0\lib\net47\MahApps.Metro.dll</HintPath>
     </Reference>
@@ -323,6 +329,7 @@
     <Compile Include="ViewModels\Interfaces\ISettingsView.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\MatchDataModel.cs" />
+    <Compile Include="ViewModels\PlayerStatisticModel.cs" />
     <Compile Include="ViewModels\UserDataModel.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
@@ -335,6 +342,9 @@
     </Compile>
     <Compile Include="Views\MatchDataView.xaml.cs">
       <DependentUpon>MatchDataView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlayerStatisticView.xaml.cs">
+      <DependentUpon>PlayerStatisticView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UserControls\UserDataControl.xaml.cs">
       <DependentUpon>UserDataControl.xaml</DependentUpon>
@@ -387,6 +397,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\MatchDataView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PlayerStatisticView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -104,6 +104,14 @@ namespace TournamentManager.ViewModels
                     Label = "Matches",
                     ToolTip = "Matches ansehen.",
                     Tag = new MatchDataModel()
+                },
+                new HamburgerMenuIconItem()
+                {
+                    Icon = new PackIconMaterial() {Kind = PackIconMaterialKind.Earth},
+                    Label = "Spieler Statistik",
+                    ToolTip = "Statistiken ansehen.",
+                    Tag = new PlayerStatisticModel(),
+                    IsVisible = true
                 }
             };
 
