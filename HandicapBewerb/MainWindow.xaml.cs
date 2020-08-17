@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using AutoUpdaterDotNET;
 using TournamentManager.Core.Data;
 using TournamentManager.Core.Handler;
@@ -10,9 +11,6 @@ using MahApps.Metro.Controls.Dialogs;
 
 namespace TournamentManager
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     // ReSharper disable once RedundantExtendsListEntry
     public partial class MainWindow : MetroWindow
     {
@@ -23,13 +21,32 @@ namespace TournamentManager
         {
             InitializeComponent();
             _mainView = this;
-            AutoUpdater.ReportErrors = true;
-            AutoUpdater.Start("http://rbsoft.org/updates/AutoUpdaterTest.xml");
+            SetUpAutoUpdater();
             Mediator.Register(MediatorGlobal.AddUser, OnAddUser);
             Mediator.Register(MediatorGlobal.AddRound, OnAddRound);
             Mediator.Register(MediatorGlobal.ErrorDialog, OnErrorDialog);
             Mediator.Register(MediatorGlobal.LoginDialog, OnLoginDialog);
             Closing += WindowClosing;
+        }
+
+        private void SetUpAutoUpdater()
+        {
+            try
+            {
+                if (File.Exists(ApplicationData.UpdateFilePathFull))
+                {
+                    File.Delete(ApplicationData.UpdateFilePathFull);
+                }
+                string jsonPath = Path.Combine(Environment.CurrentDirectory, "autoUpdaterSettings.json");
+                AutoUpdater.PersistenceProvider = new JsonFilePersistenceProvider(jsonPath);
+                AutoUpdater.DownloadPath = ApplicationData.DownloadPath;
+
+                AutoUpdater.Start(ApplicationData.UpdateUrl);
+            }
+            catch (Exception e)
+            {
+                LogHandler.WriteSystemLog("SetUpAutoUpdater:" + e, LogLevel.Error);
+            }
         }
 
         private async void OnLoginDialog(object obj)
@@ -167,36 +184,5 @@ namespace TournamentManager
 
             if (_closeMe) Close();
         }
-
-        public static MetroWindow GetInstance
-        {
-            get => _mainView;
-        }
-
-        private void Slider_ValueChanged(object sender, System.Windows.RoutedPropertyChangedEventArgs<double> e)
-        {
-            Mediator.NotifyColleagues(MediatorGlobal.SliderRateValueChanged, (int)e.NewValue);
-        }
-
-        private void EpisodeSlider_ValueChanged(object sender, System.Windows.RoutedPropertyChangedEventArgs<double> e)
-        {
-            Mediator.NotifyColleagues(MediatorGlobal.EpisodeSliderRateValueChanged, (int)e.NewValue);
-        }
-
-        //private async void CustomDialog(string identifier, string title, string message)
-        //{
-        //    var mySettings = new MetroDialogSettings()
-        //    {
-        //        AffirmativeButtonText = "Ok",
-        //        NegativeButtonText = "Abbrechen",
-        //        AnimateShow = true,
-        //        AnimateHide = false
-        //    };
-
-        //    var result = await this.ShowMessageAsync(
-        //        title,
-        //        message,
-        //        MessageDialogStyle.AffirmativeAndNegative, mySettings);
-        //}
     }
 }

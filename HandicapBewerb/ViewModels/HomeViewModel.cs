@@ -82,7 +82,7 @@ namespace TournamentManager.ViewModels
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                LogHandler.WriteSystemLog("OnAddPlayerViewClose:" + e, LogLevel.Error);
             }
         }
 
@@ -202,9 +202,7 @@ namespace TournamentManager.ViewModels
             }
             catch (Exception e)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(e);
-                Console.ResetColor();
+                LogHandler.WriteSystemLog("SaveAllCommand:" + e, LogLevel.Error);
             }
         }
 

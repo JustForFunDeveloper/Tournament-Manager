@@ -119,11 +119,25 @@
                 <Button Content="Neues Spiel"
                         Style="{StaticResource MahApps.Styles.Button.Square.Accent}" 
                         Margin="0,0,0,5"
-                        Command="{Binding NewGame}"/>
+                        Command="{Binding NewGame}"
+                        BorderBrush="Transparent">
+                    <Button.ContentTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Content}" />
+                        </DataTemplate>
+                    </Button.ContentTemplate>
+                </Button>
                 <Button Content="Schützen hinzufügen / entfernen"
                         Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
                         Command="{Binding AddPlayers}"
-                        IsEnabled="{Binding IsAddPlayersEnabled}"/>
+                        IsEnabled="{Binding IsAddPlayersEnabled}"
+                        BorderBrush="Transparent">
+                    <Button.ContentTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Content}" />
+                        </DataTemplate>
+                    </Button.ContentTemplate>
+                </Button>
             </StackPanel>
             <StackPanel Grid.Column="2" 
                         Orientation="Vertical"
@@ -134,11 +148,25 @@
                         Style="{StaticResource MahApps.Styles.Button.Square.Accent}" 
                         Margin="0,0,0,5"
                         Command="{Binding SaveAll}"
-                        IsEnabled="{Binding IsSaveAllEnabled}"/>
+                        IsEnabled="{Binding IsSaveAllEnabled}"
+                        BorderBrush="Transparent">
+                    <Button.ContentTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Content}" />
+                        </DataTemplate>
+                    </Button.ContentTemplate>
+                </Button>
                 <Button Content="Platzierungen berechnen"
                         Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
                         Command="{Binding SortPositions}"
-                        IsEnabled="{Binding IsSortPositionsEnabled}"/>
+                        IsEnabled="{Binding IsSortPositionsEnabled}"
+                        BorderBrush="Transparent">
+                    <Button.ContentTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Content}" />
+                        </DataTemplate>
+                    </Button.ContentTemplate>
+                </Button>
             </StackPanel>
         </Grid>
 

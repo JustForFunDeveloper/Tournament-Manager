@@ -44,6 +44,9 @@ namespace TournamentManager.ViewModels
             Mediator.Register(MediatorGlobal.AddPlayerViewOpen, OnAddPlayerViewOpen);
             Mediator.Register(MediatorGlobal.AddPlayerViewClose, OnAddPlayerViewClose);
             Mediator.Register(MediatorGlobal.LogInSuccessfull, OnLogInSuccessfull);
+            Mediator.Register(MediatorGlobal.OnBackToUserDataView, OnBackToUserDataView);
+            Mediator.Register(MediatorGlobal.OnMatchStatistics, OnStatisticsWindow);
+            Mediator.Register(MediatorGlobal.OnRoundStatistics, OnStatisticsWindow);
 
             LoginText = "Anmelden";
         }
@@ -62,6 +65,16 @@ namespace TournamentManager.ViewModels
         private void OnAddPlayerViewOpen(object obj)
         {
             SelectedIndex = 1;
+        }
+
+        private void OnBackToUserDataView(object obj)
+        {
+            SelectedIndex = 2;
+        }
+
+        private void OnStatisticsWindow(object obj)
+        {
+            SelectedIndex = 4;
         }
 
         [NotifyPropertyChangedInvocator]
@@ -111,7 +124,7 @@ namespace TournamentManager.ViewModels
                     Label = "Spieler Statistik",
                     ToolTip = "Statistiken ansehen.",
                     Tag = new PlayerStatisticModel(),
-                    IsVisible = true
+                    IsVisible = false
                 }
             };
 
@@ -201,7 +214,6 @@ namespace TournamentManager.ViewModels
         private void ItemClickCommand()
         {
             IsPaneOpened = false;
-            Console.WriteLine(SelectedIndex);
 
             if (Enum.TryParse(SelectedIndex.ToString(),out ApplicationViewEnum clickedView))
             {

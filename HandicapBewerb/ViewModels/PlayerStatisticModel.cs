@@ -1,13 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Wpf;
-using Microsoft.Win32.SafeHandles;
 using TournamentManager.Core.Handler;
-using TournamentManager.DataModels.DbModels;
 using TournamentManager.ViewModels.Handler;
 
 namespace TournamentManager.ViewModels
@@ -16,7 +15,10 @@ namespace TournamentManager.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private readonly string DATE_FORMAT = "dd.MM.yy HH:mm";
+        private int? _currentUserId = null;
+        private bool _isRoundMode;
 
+        private ICommand _onClose;
         private ICommand _onShiftLeft;
         private ICommand _onShiftRight;
         private ICommand _onZoomIn;
@@ -28,7 +30,7 @@ namespace TournamentManager.ViewModels
         private bool _canOnZoomOut = true;
 
         private int _currentZoomLevel = 100;
-        private readonly int ZOOM_STEPS = 10;
+        private int _zoomSteps = 10;
         private readonly int MAX_ZOOM = 200;
         private int _currentSkipValue = 0;
         private int _lastDataSkipLevel = 0;
@@ -36,6 +38,30 @@ namespace TournamentManager.ViewModels
         public SeriesCollection SeriesCollection { get; set; }
         public string[] Labels { get; set; }
         public Func<double, string> YFormatter { get; set; }
+        public string UserText { get; set; }
+
+        public ICommand OnClose
+        {
+            get
+            {
+                if (_onClose == null)
+                    _onClose = new RelayCommand(
+                        param => OnCloseCommand(),
+                        param => CanOnCloseCommand()
+                    );
+                return _onClose;
+            }
+        }
+
+        private bool CanOnCloseCommand()
+        {
+            return true;
+        }
+
+        private void OnCloseCommand()
+        {
+            Mediator.NotifyColleagues(MediatorGlobal.OnBackToUserDataView, null);
+        }
 
         public ICommand OnShiftLeft
         {
@@ -59,7 +85,10 @@ namespace TournamentManager.ViewModels
         {
             _canOnShiftRight = true;
             _currentSkipValue += _currentZoomLevel;
-            RefreshChart();
+            if (_isRoundMode)
+                RefreshRoundChart();
+            else
+                RefreshMatchChart();
         }
 
         public ICommand OnShiftRight
@@ -90,7 +119,11 @@ namespace TournamentManager.ViewModels
                 _currentSkipValue = 0;
                 _canOnShiftRight = false;
             }
-            RefreshChart();
+
+            if (_isRoundMode)
+                RefreshRoundChart();
+            else
+                RefreshMatchChart();
         }
 
         public ICommand OnZoomIn
@@ -117,15 +150,18 @@ namespace TournamentManager.ViewModels
             _canOnShiftRight = true;
             _canOnZoomOut = true;
 
-            _currentZoomLevel -= ZOOM_STEPS;
+            _currentZoomLevel -= _zoomSteps;
 
             if (_currentZoomLevel <= 0)
             {
-                _currentZoomLevel = ZOOM_STEPS;
+                _currentZoomLevel = _zoomSteps;
                 _canOnZoomIn = false;
             }
 
-            RefreshChart();
+            if (_isRoundMode)
+                RefreshRoundChart();
+            else
+                RefreshMatchChart();
         }
 
         public ICommand OnZoomOut
@@ -152,37 +188,50 @@ namespace TournamentManager.ViewModels
             _canOnShiftRight = true;
             _canOnZoomIn = true;
 
-            _currentZoomLevel += ZOOM_STEPS;
+            _currentSkipValue -= _currentZoomLevel;
+            if (_currentSkipValue < 0)
+            {
+                _currentSkipValue = 0;
+                _canOnShiftRight = false;
+            }
+
+            _currentZoomLevel += _zoomSteps;
 
             if (_currentZoomLevel > MAX_ZOOM)
             {
-                _currentZoomLevel -= ZOOM_STEPS;
+                _currentZoomLevel -= _zoomSteps;
                 _canOnZoomOut = false;
             }
 
-            RefreshChart();
+            if (_isRoundMode)
+                RefreshRoundChart();
+            else
+                RefreshMatchChart();
         }
 
         public PlayerStatisticModel()
         {
-            DisplayGraphForUser(null);
+            Mediator.Register(MediatorGlobal.OnRoundStatistics, OnRoundStatistics);
+            Mediator.Register(MediatorGlobal.OnMatchStatistics, OnMatchStatistics);
         }
 
-        public void DisplayGraphForUser(User user)
+        private void OnMatchStatistics(object obj)
         {
-            //var rounds = DbHandler.GetUserRounds(DbHandler.GetUsers()[0]);
-            //var doubleValues = rounds
-            //    .OrderByDescending(r => r.Date)
-            //    .Take(INITIAL_ZOOM)
-            //    .Select(r => r.Points)
-            //    .Reverse();
-            //var dates = rounds.Select(r => r.Date)
-            //    .OrderByDescending(r => r)
-            //    .Take(INITIAL_ZOOM)
-            //    .Select(d => d.ToString(DATE_FORMAT))
-            //    .Reverse()
-            //    .ToArray();
+            _isRoundMode = false;
+            _currentZoomLevel = 100;
+            DisplayMatchGraphForUser((int?)obj);
+        }
 
+        private void OnRoundStatistics(object obj)
+        {
+            _isRoundMode = true;
+            _currentZoomLevel = 100;
+            DisplayRoundGraphForUser((int?)obj);
+        }
+
+        private void DisplayRoundGraphForUser(int? userId)
+        {
+            _currentUserId = userId;
             SeriesCollection = new SeriesCollection
             {
                 new LineSeries
@@ -191,18 +240,41 @@ namespace TournamentManager.ViewModels
                     Values = new ChartValues<double> (),
                     LineSmoothness = 0,
                     PointGeometry = DefaultGeometries.Square,
-                    PointGeometrySize = 8
+                    PointGeometrySize = 10
                 }
             };
-
-            //Labels = dates;
             YFormatter = value => value.ToString("F1");
-            RefreshChart();
+            RefreshRoundChart();
         }
 
-        private void RefreshChart()
+        private void DisplayMatchGraphForUser(int? userId)
         {
-            var rounds = DbHandler.GetUserRounds(DbHandler.GetUsers()[0]);
+            _currentUserId = userId;
+            SeriesCollection = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Title = "Matches",
+                    Values = new ChartValues<double> (),
+                    LineSmoothness = 0,
+                    PointGeometry = DefaultGeometries.Square,
+                    PointGeometrySize = 10,
+                    Stroke = Brushes.Green
+                }
+            };
+            YFormatter = value => value.ToString("F1");
+            RefreshMatchChart();
+        }
+
+        private void RefreshRoundChart()
+        {
+            if (_currentUserId == null)
+                return;
+
+            var user = DbHandler.GetUsers().Single(u => u.UserId.Equals((int) _currentUserId));
+            UserText = $"Runden Statistik von {user.Name}";
+
+            var rounds = DbHandler.GetUserRounds(user);
             var doubleValues = rounds
                 .OrderByDescending(r => r.Date)
                 .Skip(_currentSkipValue).Take(_currentZoomLevel)
@@ -244,12 +316,70 @@ namespace TournamentManager.ViewModels
 
             if (doubleValues.Count() < _currentZoomLevel)
             {
-                _canOnZoomOut = false;
+                //_canOnZoomOut = false;
                 _currentZoomLevel = doubleValues.Count();
                 _canOnZoomIn = true;
             }
 
-            Console.WriteLine($"Skip: {_currentSkipValue} Zoom: {_currentZoomLevel} ");
+            _zoomSteps = doubleValues.Count() / 2;
+        }
+
+        private void RefreshMatchChart()
+        {
+            if (_currentUserId == null)
+                return;
+
+            var user = DbHandler.GetUsers().Single(u => u.UserId.Equals((int)_currentUserId));
+            UserText = $"Match Statistik von {user.Name}";
+
+            var matches = DbHandler.GetAllMatchesFromUser(user);
+            var doubleValues = matches
+                .OrderByDescending(r => r.Date)
+                .Skip(_currentSkipValue).Take(_currentZoomLevel)
+                .SelectMany(r => r.MatchResults.Where(mr => mr.UserName == user.Name).Select(mr => mr.Result))
+                .Reverse();
+
+            if (doubleValues.Count() <= 2)
+            {
+                _canOnShiftLeft = false;
+                if (doubleValues.Count() <= 0)
+                {
+                    _canOnShiftLeft = false;
+                    _currentSkipValue = _lastDataSkipLevel;
+
+                    doubleValues = matches
+                        .OrderByDescending(r => r.Date)
+                        .Skip(_currentSkipValue).Take(_currentZoomLevel)
+                        .SelectMany(r => r.MatchResults.Where(mr => mr.UserName == user.Name).Select(mr => mr.Result))
+                        .Reverse();
+                }
+            }
+            else
+            {
+                _lastDataSkipLevel = _currentSkipValue;
+            }
+
+            var dates = matches
+                .Select(r => r.Date)
+                .OrderByDescending(r => r)
+                .Skip(_currentSkipValue)
+                .Take(_currentZoomLevel)
+                .Select(d => d.ToString(DATE_FORMAT))
+                .Reverse()
+                .ToArray();
+
+            SeriesCollection[0].Values = new ChartValues<double>(doubleValues);
+            Labels = dates;
+
+
+            if (doubleValues.Count() < _currentZoomLevel)
+            {
+                //_canOnZoomOut = false;
+                _currentZoomLevel = doubleValues.Count();
+                _canOnZoomIn = true;
+            }
+
+            _zoomSteps = doubleValues.Count() / 2;
         }
     }
 }

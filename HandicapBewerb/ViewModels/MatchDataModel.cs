@@ -113,7 +113,7 @@ namespace TournamentManager.ViewModels
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                LogHandler.WriteSystemLog("OnDeleteMatchCommand:" + e, LogLevel.Error);
             }
         }
 

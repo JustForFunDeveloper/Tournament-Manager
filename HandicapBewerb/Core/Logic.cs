@@ -27,15 +27,15 @@ namespace TournamentManager.Core
             {
                 DbHandler.Migrate();
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Console.WriteLine(ex);
+                LogHandler.WriteSystemLog("OnExceptionEvent:" + e, LogLevel.Error);
             }
         }
 
         private void OnExceptionEvent(object sender, Exception e)
         {
-            LogHandler.WriteSystemLog("OnExceptionEvent:" + e, LogLevel.Debug);
+            LogHandler.WriteSystemLog("OnExceptionEvent:" + e, LogLevel.Error);
         }
     }
 }

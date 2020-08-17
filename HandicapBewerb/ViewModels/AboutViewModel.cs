@@ -3,6 +3,8 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Windows.Input;
+using AutoUpdaterDotNET;
+using TournamentManager.Core.Data;
 using TournamentManager.Core.Handler;
 using TournamentManager.ViewModels.Handler;
 
@@ -55,7 +57,9 @@ namespace TournamentManager.ViewModels
         {
             try
             {
-                System.Diagnostics.Process.Start("https://github.com/JustForFunDeveloper/Tournament-Manager/releases");
+                AutoUpdater.ReportErrors = true;
+                AutoUpdater.Mandatory = true;
+                AutoUpdater.Start(ApplicationData.UpdateUrl);
             }
             catch (Exception ex)
             {

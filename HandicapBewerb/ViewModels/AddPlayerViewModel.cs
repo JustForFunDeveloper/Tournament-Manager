@@ -133,7 +133,7 @@ namespace TournamentManager.ViewModels
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                LogHandler.WriteSystemLog("OnExceptionEvent:" + e, LogLevel.Error);
             }
         }
     }

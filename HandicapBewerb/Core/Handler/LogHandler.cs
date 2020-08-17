@@ -154,9 +154,9 @@ namespace TournamentManager.Core.Handler
             {
                 if (logLevel >= _logLevel)
                 {
-                    _fileHandler.CreateFileIfNotExist(GetCurrentLogName());
+                    _fileHandler.CreateFileIfNotExist(GetCurrentLogName(), LogicConstants.LogFilePath);
                     StringBuilder stringBuilder = new StringBuilder();
-                    stringBuilder.Append(DateTime.Now).Append(";").Append(LogLevel.Error).Append(";").Append(text);
+                    stringBuilder.Append(DateTime.Now).Append(";").Append(logLevel).Append(";").Append(text);
                     _fileHandler.AppendText(GetCurrentLogName(), stringBuilder.ToString(),
                         LogicConstants.LogFilePath);
                     UpdateLogCounter(logLevel);

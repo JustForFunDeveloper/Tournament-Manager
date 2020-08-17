@@ -27,6 +27,8 @@ namespace TournamentManager.ViewModels
         private ICommand _onDiscardUser;
         private ICommand _onAddRound;
         private ICommand _onDeleteRound;
+        private ICommand _onRoundStatistic;
+        private ICommand _onMatchStatistic;
 
         public bool IsUsersReadOnly { get; set; }
         public bool IsUsersEnabled { get; set; }
@@ -71,7 +73,6 @@ namespace TournamentManager.ViewModels
         public UserDataModel()
         {
             Mediator.Register(MediatorGlobal.PlayerEditComit, OnPlayerEditComit);
-            Mediator.Register(MediatorGlobal.UserDataViewOpen, OnUserDataViewOpen);
             Mediator.Register(MediatorGlobal.UserDataViewOpen, OnUserDataViewOpen);
             Mediator.Register(MediatorGlobal.PlayerOnBegininningEdit, OnPlayerOnBegininningEdit);
             Mediator.Register(MediatorGlobal.PlayerEditCancel, OnPlayerEditCancel);
@@ -271,7 +272,7 @@ namespace TournamentManager.ViewModels
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                LogHandler.WriteSystemLog("OnDeleteUserCommand:" + e, LogLevel.Error);
             }
         }
 
@@ -301,7 +302,7 @@ namespace TournamentManager.ViewModels
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                LogHandler.WriteSystemLog("OnAddRoundCommand:" + e, LogLevel.Error);
             }
         }
 
@@ -343,7 +344,59 @@ namespace TournamentManager.ViewModels
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                LogHandler.WriteSystemLog("OnDeleteRoundCommand:" + e, LogLevel.Error);
+            }
+        }
+
+        public ICommand OnRoundStatistic
+        {
+            get
+            {
+                if (_onRoundStatistic == null)
+                    _onRoundStatistic = new RelayCommand(
+                        param => OnRoundStatisticCommand(),
+                        param => CanOnRoundStatisticCommand()
+                    );
+                return _onRoundStatistic;
+            }
+        }
+
+        private bool CanOnRoundStatisticCommand()
+        {
+            return true;
+        }
+
+        private void OnRoundStatisticCommand()
+        {
+            if (Selection != null)
+            {
+                Mediator.NotifyColleagues(MediatorGlobal.OnRoundStatistics, Selection.UserId);
+            }
+        }
+
+        public ICommand OnMatchStatistic
+        {
+            get
+            {
+                if (_onMatchStatistic == null)
+                    _onMatchStatistic = new RelayCommand(
+                        param => OnMatchStatisticCommand(),
+                        param => CanOnMatchStatisticCommand()
+                    );
+                return _onMatchStatistic;
+            }
+        }
+
+        private bool CanOnMatchStatisticCommand()
+        {
+            return true;
+        }
+
+        private void OnMatchStatisticCommand()
+        {
+            if (Selection != null)
+            {
+                Mediator.NotifyColleagues(MediatorGlobal.OnMatchStatistics, Selection.UserId);
             }
         }
 

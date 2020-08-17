@@ -332,8 +332,11 @@ namespace TournamentManager.Core.Handler
         {
             using (var db = new ApplicationDbContext())
             {
-                var myUser = db.Users.Include(m => m.UserMatches).Single(u => u.UserId.Equals(user.UserId));
-                return myUser.UserMatches.Select(userMatch => userMatch.Match).ToList();
+                var myUser = db.Users.Include(m => m.UserMatches)
+                    .ThenInclude(m => m.Match)
+                    .ThenInclude(m => m.MatchResults)
+                    .Single(u => u.UserId.Equals(user.UserId));
+                return new List<Match>(myUser.UserMatches.Select(userMatch => userMatch.Match));
             }
         }
     }

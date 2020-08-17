@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Web.Configuration;
 
 namespace TournamentManager.Core.Handler
 {
@@ -59,6 +60,11 @@ namespace TournamentManager.Core.Handler
 
                 DateTime dt = DateTime.Now;
                 string[] lines = { fileName, "Created at: " + dt.ToLocalTime() };
+
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
 
                 if (withHeader)
                     File.WriteAllLines(path + fileName, lines);
