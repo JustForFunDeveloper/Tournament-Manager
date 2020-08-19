@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using TournamentManager.ViewModels;
 using TournamentManager.Views.UserControls;
 
 namespace TournamentManager.Core.Data
@@ -17,5 +18,7 @@ namespace TournamentManager.Core.Data
         public static bool IsAdminLoggedIn { get; set; }
         public static List<int> CurrentSelectedUser { get; set; }
         public static List<UserDataControl> UserDataControls { get; set; }
+
+        public static List<Team> TeamControls { get; set; }
     }
 }

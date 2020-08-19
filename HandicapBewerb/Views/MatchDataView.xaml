@@ -6,6 +6,8 @@
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
+             xmlns:viewModels="clr-namespace:TournamentManager.ViewModels"
+             d:DataContext="{d:DesignInstance viewModels:MatchDataModel}"
              mc:Ignorable="d" 
              d:DesignHeight="700"
              d:DesignWidth="1200">

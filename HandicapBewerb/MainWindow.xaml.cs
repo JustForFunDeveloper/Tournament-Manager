@@ -114,7 +114,7 @@ namespace TournamentManager
         {
             var mySettings = new MetroDialogSettings()
             {
-                AffirmativeButtonText = "Beenden",
+                AffirmativeButtonText = "Ok",
                 NegativeButtonText = "Abbrechen",
                 AnimateShow = true,
                 AnimateHide = false

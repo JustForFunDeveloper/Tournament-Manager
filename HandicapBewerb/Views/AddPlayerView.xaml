@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:viewModels="clr-namespace:TournamentManager.ViewModels"
              d:DesignHeight="700"
              d:DesignWidth="1200"
              mc:Ignorable="d">

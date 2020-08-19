@@ -15,5 +15,11 @@ namespace TournamentManager.DataModels.DbModels
 
         public ICollection<Round> Rounds { get; set; }
         public ICollection<UserMatch> UserMatches { get; set; }
+        public ICollection<UserTeamMatch> UserTeamMatches { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

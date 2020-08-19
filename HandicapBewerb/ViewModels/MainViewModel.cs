@@ -34,15 +34,21 @@ namespace TournamentManager.ViewModels
         public enum ApplicationViewEnum
         {
             HomeView = 0,
-            UserDataView = 2,
-            MatchDataView = 3
+            TeamHomeView = 1,
+            AddPlayerView = 2,
+            UserDataView = 3,
+            MatchDataView = 4,
+            PlayerStatisticView = 5,
+            AddTeamPlayerView = 6
         }
 
         public MainViewModel()
         {
             CreateMenuItems();
             Mediator.Register(MediatorGlobal.AddPlayerViewOpen, OnAddPlayerViewOpen);
+            Mediator.Register(MediatorGlobal.AddTeamPlayerViewOpen, AddTeamPlayerViewOpen);
             Mediator.Register(MediatorGlobal.AddPlayerViewClose, OnAddPlayerViewClose);
+            Mediator.Register(MediatorGlobal.AddTeamPlayerViewClose, AddTeamPlayerViewClose);
             Mediator.Register(MediatorGlobal.LogInSuccessfull, OnLogInSuccessfull);
             Mediator.Register(MediatorGlobal.OnBackToUserDataView, OnBackToUserDataView);
             Mediator.Register(MediatorGlobal.OnMatchStatistics, OnStatisticsWindow);
@@ -59,22 +65,32 @@ namespace TournamentManager.ViewModels
 
         private void OnAddPlayerViewClose(object obj)
         {
-            SelectedIndex = 0;
+            SelectedIndex = (int)ApplicationViewEnum.HomeView;
         }
 
         private void OnAddPlayerViewOpen(object obj)
         {
-            SelectedIndex = 1;
+            SelectedIndex = (int)ApplicationViewEnum.AddPlayerView;
         }
 
         private void OnBackToUserDataView(object obj)
         {
-            SelectedIndex = 2;
+            SelectedIndex = (int)ApplicationViewEnum.UserDataView;
         }
 
         private void OnStatisticsWindow(object obj)
         {
-            SelectedIndex = 4;
+            SelectedIndex = (int)ApplicationViewEnum.PlayerStatisticView;
+        }
+
+        private void AddTeamPlayerViewOpen(object obj)
+        {
+            SelectedIndex = (int)ApplicationViewEnum.AddTeamPlayerView;
+        }
+
+        private void AddTeamPlayerViewClose(object obj)
+        {
+            SelectedIndex = (int)ApplicationViewEnum.TeamHomeView;
         }
 
         [NotifyPropertyChangedInvocator]
@@ -92,9 +108,17 @@ namespace TournamentManager.ViewModels
                 new HamburgerMenuIconItem()
                 {
                     Icon = new PackIconMaterial() {Kind = PackIconMaterialKind.Tournament},
-                    Label = "Handicap Turnier",
+                    Label = "Handicap Solo Turnier",
                     ToolTip = "Die Hautptanzeige für diesen Spielmodus.",
-                    Tag = new HomeViewModel(),
+                    Tag = new HomeViewModel()
+                },
+                new HamburgerMenuIconItem()
+                {
+                    Icon = new PackIconMaterial() {Kind = PackIconMaterialKind.Tournament},
+                    Label = "Handicap Team Turnier",
+                    ToolTip = "Die Hautptanzeige für diesen Team Spielmodus.",
+                    Tag = new TeamHomeViewModel(),
+                    IsVisible = false
                 },
                 new HamburgerMenuIconItem()
                 {
@@ -124,6 +148,14 @@ namespace TournamentManager.ViewModels
                     Label = "Spieler Statistik",
                     ToolTip = "Statistiken ansehen.",
                     Tag = new PlayerStatisticModel(),
+                    IsVisible = false
+                },
+                new HamburgerMenuIconItem()
+                {
+                    Icon = new PackIconMaterial() {Kind = PackIconMaterialKind.Earth},
+                    Label = "TeamSpieler",
+                    ToolTip = "TeamSpieler hinzufügen",
+                    Tag = new TeamAddPlayerViewModel(),
                     IsVisible = false
                 }
             };

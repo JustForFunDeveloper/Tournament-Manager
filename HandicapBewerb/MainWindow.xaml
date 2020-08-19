@@ -73,6 +73,9 @@
             <DataTemplate DataType="{x:Type viewModels1:HomeViewModel}">
                 <views1:HomeView DataContext="{Binding}" />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels1:TeamHomeViewModel}">
+                <views1:TeamHomeView DataContext="{Binding}" />
+            </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels1:AboutViewModel}">
                 <views1:AboutView DataContext="{Binding}" />
             </DataTemplate>
@@ -87,6 +90,9 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels1:PlayerStatisticModel}">
                 <views1:PlayerStatisticView DataContext="{Binding}" />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels1:TeamAddPlayerViewModel}">
+                <views1:TeamAddPlayerView DataContext="{Binding}" />
             </DataTemplate>
         </Grid.Resources>
 
