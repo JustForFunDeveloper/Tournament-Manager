@@ -39,7 +39,8 @@ namespace TournamentManager.ViewModels
             UserDataView = 3,
             MatchDataView = 4,
             PlayerStatisticView = 5,
-            AddTeamPlayerView = 6
+            AddTeamPlayerView = 6,
+            TeamMatchDataView = 7
         }
 
         public MainViewModel()
@@ -117,8 +118,7 @@ namespace TournamentManager.ViewModels
                     Icon = new PackIconMaterial() {Kind = PackIconMaterialKind.Tournament},
                     Label = "Handicap Team Turnier",
                     ToolTip = "Die Hautptanzeige für diesen Team Spielmodus.",
-                    Tag = new TeamHomeViewModel(),
-                    IsVisible = false
+                    Tag = new TeamHomeViewModel()
                 },
                 new HamburgerMenuIconItem()
                 {
@@ -154,9 +154,16 @@ namespace TournamentManager.ViewModels
                 {
                     Icon = new PackIconMaterial() {Kind = PackIconMaterialKind.Earth},
                     Label = "TeamSpieler",
-                    ToolTip = "TeamSpieler hinzufügen",
+                    ToolTip = "TeamSpieler hinzufügen.",
                     Tag = new TeamAddPlayerViewModel(),
                     IsVisible = false
+                },
+                new HamburgerMenuIconItem()
+                {
+                    Icon = new PackIconMaterial() {Kind = PackIconMaterialKind.Bullseye},
+                    Label = "Team Matches",
+                    ToolTip = "Team Matches ansehen.",
+                    Tag = new TeamMatchDataModel()
                 }
             };
 

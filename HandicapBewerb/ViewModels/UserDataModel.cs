@@ -29,6 +29,7 @@ namespace TournamentManager.ViewModels
         private ICommand _onDeleteRound;
         private ICommand _onRoundStatistic;
         private ICommand _onMatchStatistic;
+        private ICommand _onTeamMatchStatistic;
 
         public bool IsUsersReadOnly { get; set; }
         public bool IsUsersEnabled { get; set; }
@@ -60,6 +61,7 @@ namespace TournamentManager.ViewModels
             {
                 if (value != null)
                 {
+                    IsRoundEditingEnabled = true;
                     Rounds = new ObservableCollection<Round>(DbHandler.GetUserRounds(value));
                 }
                 else
@@ -80,7 +82,6 @@ namespace TournamentManager.ViewModels
             Mediator.Register(MediatorGlobal.OnAddedRound, OnAddedRound);
             Mediator.Register(MediatorGlobal.RefreshView, OnRefreshView);
             Mediator.Register(MediatorGlobal.PlayerEditUserComit, OnPlayerEditUserComit);
-            OnUserDataViewOpen(null);
         }
 
         private void OnPlayerEditUserComit(object obj)
@@ -145,7 +146,7 @@ namespace TournamentManager.ViewModels
                 IsRoundsReadOnly = true;
             }
 
-            IsRoundEditingEnabled = true;
+            IsRoundEditingEnabled = false;
             IsUserEditingEnabled = true;
             IsUsersEnabled = true;
             EditingVisibility = Visibility.Collapsed;
@@ -397,6 +398,32 @@ namespace TournamentManager.ViewModels
             if (Selection != null)
             {
                 Mediator.NotifyColleagues(MediatorGlobal.OnMatchStatistics, Selection.UserId);
+            }
+        }
+
+        public ICommand OnTeamMatchStatistic
+        {
+            get
+            {
+                if (_onTeamMatchStatistic == null)
+                    _onTeamMatchStatistic = new RelayCommand(
+                        param => OnTeamMatchStatisticCommand(),
+                        param => CanOnTeamMatchStatisticCommand()
+                    );
+                return _onTeamMatchStatistic;
+            }
+        }
+
+        private bool CanOnTeamMatchStatisticCommand()
+        {
+            return true;
+        }
+
+        private void OnTeamMatchStatisticCommand()
+        {
+            if (Selection != null)
+            {
+                Mediator.NotifyColleagues(MediatorGlobal.OnTeamMatchStatistics, Selection.UserId);
             }
         }
 

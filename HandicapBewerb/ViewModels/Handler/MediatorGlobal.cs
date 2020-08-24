@@ -21,6 +21,7 @@
         public static readonly string PlayerEditUserComit = "PlayerEditUserComit";
         public static readonly string OnRoundStatistics = "OnRoundStatistics";
         public static readonly string OnMatchStatistics = "OnMatchStatistics";
+        public static readonly string OnTeamMatchStatistics = "OnTeamMatchStatistics";
         public static readonly string SelectedTeamUsers = "SelectedTeamUsers";
     }
 }

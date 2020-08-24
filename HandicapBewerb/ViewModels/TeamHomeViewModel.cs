@@ -22,7 +22,6 @@ namespace TournamentManager.ViewModels
 
         #region private Member
 
-        private ICommand _searchLocalFolder;
         private ICommand _newGame;
         private ICommand _addPlayers;
         private ICommand _saveAll;
@@ -39,13 +38,13 @@ namespace TournamentManager.ViewModels
         public bool IsSaveAllEnabled { get; set; }
         public bool IsSortPositionsEnabled { get; set; }
 
-        public ObservableCollection<UserDataControl> UserDataControls { get; set; }
+        public ObservableCollection<TeamUserDataControl> TeamUserDataControls { get; set; }
 
         public TeamHomeViewModel()
         {
             Mediator.Register(MediatorGlobal.AddTeamPlayerViewClose, AddTeamPlayerViewClose);
             Mediator.Register(MediatorGlobal.RefreshView, OnRefreshView);
-            UserDataControls = new ObservableCollection<UserDataControl>();
+            TeamUserDataControls = new ObservableCollection<TeamUserDataControl>();
 
             IsAddPlayersEnabled = true;
             IsSaveAllEnabled = true;
@@ -65,16 +64,28 @@ namespace TournamentManager.ViewModels
         {
             try
             {
-                if (ApplicationData.CurrentSelectedUser != null)
+                if (ApplicationData.CreatedTeams != null)
                 {
-                    InitUserData(ApplicationData.CurrentSelectedUser);
+                    var teamUserDataControls = new List<TeamUserDataControl>();
+                    foreach (var team in ApplicationData.CreatedTeams)
+                    {
+                        var teamUserDataControl = new TeamUserDataControl();
+                        var userDataControls = InitUserDataControls(team);
+                        teamUserDataControl.UserDataControls = userDataControls;
+                        teamUserDataControl.TeamName = team.TeamName;
+                        teamUserDataControl.RefreshResults();
+                        teamUserDataControls.Add(teamUserDataControl);
+                    }
+
+                    TeamUserDataControls = new ObservableCollection<TeamUserDataControl>(teamUserDataControls);
+                    ApplicationData.TeamUserDataControls = TeamUserDataControls.ToList();
                 }
                 else
                 {
-                    UserDataControls.Clear();
-                    if (ApplicationData.UserDataControls != null)
+                    TeamUserDataControls.Clear();
+                    if (ApplicationData.TeamUserDataControls != null)
                     {
-                        ApplicationData.UserDataControls.Clear();
+                        ApplicationData.TeamUserDataControls.Clear();
                     }
                 }
             }
@@ -91,28 +102,6 @@ namespace TournamentManager.ViewModels
         }
 
         #region IconBar
-
-        public ICommand SearchLocalFolder
-        {
-            get
-            {
-                if (_searchLocalFolder == null)
-                    _searchLocalFolder = new RelayCommand(
-                        param => SearchLocalFolderCommand(),
-                        param => CanSearchLocalFolderCommand()
-                    );
-                return _searchLocalFolder;
-            }
-        }
-
-        private bool CanSearchLocalFolderCommand()
-        {
-            return true;
-        }
-
-        private void SearchLocalFolderCommand()
-        {
-        }
 
         public ICommand NewGame
         {
@@ -134,9 +123,9 @@ namespace TournamentManager.ViewModels
 
         private void NewGameCommand()
         {
-            ApplicationData.UserDataControls = null;
-            ApplicationData.CurrentSelectedUser = null;
-            UserDataControls.Clear();
+            ApplicationData.CreatedTeams = null;
+            ApplicationData.TeamUserDataControls = null;
+            TeamUserDataControls.Clear();
 
             IsSaveAllEnabled = true;
             IsAddPlayersEnabled = true;
@@ -189,13 +178,16 @@ namespace TournamentManager.ViewModels
             try
             {
                 SortList();
-                DbHandler.SaveMatch(ApplicationData.UserDataControls);
+                DbHandler.SaveTeamMatch(ApplicationData.TeamUserDataControls);
                 IsSaveAllEnabled = false;
                 IsAddPlayersEnabled = false;
                 IsSortPositionsEnabled = false;
-                foreach (var userDataControl in UserDataControls)
+                foreach (var team in TeamUserDataControls)
                 {
-                    userDataControl.IsInputEnabled = false;
+                    foreach (var userDataControl in team.UserDataControls)
+                    {
+                        userDataControl.IsInputEnabled = false;
+                    }
                 }
             }
             catch (Exception e)
@@ -229,8 +221,9 @@ namespace TournamentManager.ViewModels
 
         #endregion
 
-        private void InitUserData(List<int> userIds)
+        private List<UserDataControl> InitUserDataControls(Team team)
         {
+            var userIds = team.Players.Select(x => x.UserId).ToList();
             List<UserDataControl> userDataControls = new List<UserDataControl>();
 
             List<User> users = DbHandler.GetUsers();
@@ -240,23 +233,32 @@ namespace TournamentManager.ViewModels
                 if (userIds.Contains(user.UserId))
                 {
                     UserDataControl userDataControl;
-                    if (ApplicationData.UserDataControls == null ||
-                        !ApplicationData.UserDataControls.Any(u => u.UserId.Equals(user.UserId)))
+                    if (ApplicationData.TeamUserDataControls == null ||
+                        !ApplicationData.TeamUserDataControls.Any(t => t.TeamName.Equals(team.TeamName)))
                     {
                         userDataControl = new UserDataControl(user.UserId);
                         EditUserDataControlValues(userDataControl, user);
                     }
                     else
                     {
-                        userDataControl = ApplicationData.UserDataControls.Single(u => u.UserId.Equals(user.UserId));
-                        EditUserDataControlValues(userDataControl, user);
-                    }
+                        var teamUserDataControl = ApplicationData.TeamUserDataControls.Single(t => t.TeamName.Equals(team.TeamName));
 
+                        if (!teamUserDataControl.UserDataControls.Any(u => u.UserId.Equals(user.UserId)))
+                        {
+                            userDataControl = new UserDataControl(user.UserId);
+                            EditUserDataControlValues(userDataControl, user);
+                        }
+                        else
+                        {
+                            userDataControl =
+                                teamUserDataControl.UserDataControls.Single(u => u.UserId.Equals(user.UserId));
+                            EditUserDataControlValues(userDataControl, user);
+                        }
+                    }
                     userDataControls.Add(userDataControl);
                 }
             }
-            UserDataControls = new ObservableCollection<UserDataControl>(userDataControls);
-            ApplicationData.UserDataControls = userDataControls;
+            return userDataControls;
         }
 
         private void EditUserDataControlValues(UserDataControl userDataControl, User user)
@@ -300,15 +302,34 @@ namespace TournamentManager.ViewModels
 
         private void SortList()
         {
-            var userDataControls = ApplicationData.UserDataControls.OrderByDescending(u => u.SortResult);
+            var teamUserDataControls = ApplicationData.TeamUserDataControls.OrderByDescending(t => t.TeamSortResult);
             int position = 1;
-            foreach (var userDataControl in userDataControls)
+
+            var allPlayer = new List<UserDataControl>();
+
+            foreach (var teamUserDataControl in teamUserDataControls)
             {
-                userDataControl.Position = position.ToString();
+                teamUserDataControl.TeamPosition = position.ToString();
+                allPlayer.AddRange(teamUserDataControl.UserDataControls);
                 position++;
             }
 
-            UserDataControls = new ObservableCollection<UserDataControl>(userDataControls);
+            TeamUserDataControls = new ObservableCollection<TeamUserDataControl>(teamUserDataControls);
+
+            var sortedPlayers = allPlayer.OrderByDescending(u => u.SortResult);
+
+            int playerPosition = 1;
+            foreach (var userDataControl in sortedPlayers)
+            {
+                userDataControl.Position = playerPosition.ToString();
+                playerPosition++;
+            }
+
+            foreach (var teamUserDataControl in TeamUserDataControls)
+            {
+                teamUserDataControl.UserDataControls =
+                    teamUserDataControl.UserDataControls.OrderByDescending(u => u.SortResult).ToList();
+            }
         }
     }
 }

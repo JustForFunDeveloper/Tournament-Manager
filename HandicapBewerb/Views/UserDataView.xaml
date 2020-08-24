@@ -209,20 +209,21 @@
                   IsReadOnly="{Binding IsUsersReadOnly}">
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem
-                                Margin="3,0,0,0"
-                                Header="Statistik"
-                                Icon="{iconPacks:Material Kind=ChartBarStacked}">
-                        <MenuItem
-                                    Margin="3,0,0,0"
-                                    Command="{Binding OnRoundStatistic}"
-                                    Header="Runden Statistik"
-                                    Icon="{iconPacks:Material Kind=ChartLine}"/>
-                        <MenuItem
-                                    Margin="3,0,0,0"
-                                    Command="{Binding OnMatchStatistic}"
-                                    Header="Match Statistik"
-                                    Icon="{iconPacks:Material Kind=ChartAreaspline}"/>
+                    <MenuItem Margin="3,0,0,0"
+                              Header="Statistik"
+                              Icon="{iconPacks:Material Kind=ChartBarStacked}">
+                        <MenuItem Margin="3,0,0,0"
+                                  Command="{Binding OnRoundStatistic}"
+                                  Header="Runden Statistik"
+                                  Icon="{iconPacks:Material Kind=ChartLine}"/>
+                        <MenuItem Margin="3,0,0,0"
+                                  Command="{Binding OnMatchStatistic}"
+                                  Header="Match Statistik"
+                                  Icon="{iconPacks:Material Kind=ChartAreaspline}"/>
+                        <!--<MenuItem Margin="3,0,0,0"
+                                  Command="{Binding OnTeamMatchStatistic}"
+                                  Header="Team Match Statistik"
+                                  Icon="{iconPacks:Material Kind=ChartArc}"/>-->
                     </MenuItem>
                 </ContextMenu>
             </DataGrid.ContextMenu>

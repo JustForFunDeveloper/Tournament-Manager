@@ -7,16 +7,26 @@ using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Wpf;
 using TournamentManager.Core.Handler;
+using TournamentManager.DataModels.DbModels;
 using TournamentManager.ViewModels.Handler;
+using TournamentManager.Views.UserControls;
 
 namespace TournamentManager.ViewModels
 {
     public class PlayerStatisticModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private enum StatisticMode
+        {
+            RoundMode,
+            MatchMode,
+            TeamMatchMode
+        }
+
         private readonly string DATE_FORMAT = "dd.MM.yy HH:mm";
         private int? _currentUserId = null;
-        private bool _isRoundMode;
+        private StatisticMode _statisticMode;
 
         private ICommand _onClose;
         private ICommand _onShiftLeft;
@@ -85,10 +95,12 @@ namespace TournamentManager.ViewModels
         {
             _canOnShiftRight = true;
             _currentSkipValue += _currentZoomLevel;
-            if (_isRoundMode)
+            if (_statisticMode.Equals(StatisticMode.RoundMode))
                 RefreshRoundChart();
-            else
+            else if (_statisticMode.Equals(StatisticMode.MatchMode))
                 RefreshMatchChart();
+            else if (_statisticMode.Equals(StatisticMode.TeamMatchMode))
+                RefreshTeamMatchChart();
         }
 
         public ICommand OnShiftRight
@@ -120,10 +132,12 @@ namespace TournamentManager.ViewModels
                 _canOnShiftRight = false;
             }
 
-            if (_isRoundMode)
+            if (_statisticMode.Equals(StatisticMode.RoundMode))
                 RefreshRoundChart();
-            else
+            else if (_statisticMode.Equals(StatisticMode.MatchMode))
                 RefreshMatchChart();
+            else if (_statisticMode.Equals(StatisticMode.TeamMatchMode))
+                RefreshTeamMatchChart();
         }
 
         public ICommand OnZoomIn
@@ -158,10 +172,12 @@ namespace TournamentManager.ViewModels
                 _canOnZoomIn = false;
             }
 
-            if (_isRoundMode)
+            if (_statisticMode.Equals(StatisticMode.RoundMode))
                 RefreshRoundChart();
-            else
+            else if (_statisticMode.Equals(StatisticMode.MatchMode))
                 RefreshMatchChart();
+            else if (_statisticMode.Equals(StatisticMode.TeamMatchMode))
+                RefreshTeamMatchChart();
         }
 
         public ICommand OnZoomOut
@@ -176,6 +192,8 @@ namespace TournamentManager.ViewModels
                 return _onZoomOut;
             }
         }
+
+        public object DataToolTip { get; set; }
 
         private bool CanOnZoomOutCommand()
         {
@@ -203,29 +221,47 @@ namespace TournamentManager.ViewModels
                 _canOnZoomOut = false;
             }
 
-            if (_isRoundMode)
+            if (_statisticMode.Equals(StatisticMode.RoundMode))
                 RefreshRoundChart();
-            else
+            else if (_statisticMode.Equals(StatisticMode.MatchMode))
                 RefreshMatchChart();
+            else if (_statisticMode.Equals(StatisticMode.TeamMatchMode))
+                RefreshTeamMatchChart();
+        }
+
+        private void RefreshTeamMatchChart()
+        {
+            throw new NotImplementedException();
         }
 
         public PlayerStatisticModel()
         {
             Mediator.Register(MediatorGlobal.OnRoundStatistics, OnRoundStatistics);
             Mediator.Register(MediatorGlobal.OnMatchStatistics, OnMatchStatistics);
+            Mediator.Register(MediatorGlobal.OnTeamMatchStatistics, OnTeamMatchStatistics);
+        }
+
+        private void OnTeamMatchStatistics(object obj)
+        {
+            _statisticMode = StatisticMode.TeamMatchMode;
+            _currentZoomLevel = 100;
+            DataToolTip = new CustomTeamMatchTooltip();
+            //DisplayTeamMatchGraphForUser((int?)obj);
         }
 
         private void OnMatchStatistics(object obj)
         {
-            _isRoundMode = false;
+            _statisticMode = StatisticMode.TeamMatchMode;
             _currentZoomLevel = 100;
+            DataToolTip = new CustomMatchTooltip();
             DisplayMatchGraphForUser((int?)obj);
         }
 
         private void OnRoundStatistics(object obj)
         {
-            _isRoundMode = true;
+            _statisticMode = StatisticMode.RoundMode;
             _currentZoomLevel = 100;
+            DataToolTip = new DefaultTooltip();
             DisplayRoundGraphForUser((int?)obj);
         }
 
@@ -333,11 +369,12 @@ namespace TournamentManager.ViewModels
             UserText = $"Match Statistik von {user.Name}";
 
             var matches = DbHandler.GetAllMatchesFromUser(user);
-            var doubleValues = matches
+            var tooltipData = matches
                 .OrderByDescending(r => r.Date)
                 .Skip(_currentSkipValue).Take(_currentZoomLevel)
-                .SelectMany(r => r.MatchResults.Where(mr => mr.UserName == user.Name).Select(mr => mr.Result))
+                .SelectMany(r => r.MatchResults.Where(mr => mr.UserName == user.Name))
                 .Reverse();
+            var doubleValues = tooltipData.Select(mr => mr.Result);
 
             if (doubleValues.Count() <= 2)
             {
@@ -347,11 +384,13 @@ namespace TournamentManager.ViewModels
                     _canOnShiftLeft = false;
                     _currentSkipValue = _lastDataSkipLevel;
 
-                    doubleValues = matches
+                    tooltipData = matches
                         .OrderByDescending(r => r.Date)
                         .Skip(_currentSkipValue).Take(_currentZoomLevel)
-                        .SelectMany(r => r.MatchResults.Where(mr => mr.UserName == user.Name).Select(mr => mr.Result))
+                        .SelectMany(r => r.MatchResults.Where(mr => mr.UserName == user.Name))
                         .Reverse();
+                    doubleValues = tooltipData
+                        .Select(mr => mr.Result);
                 }
             }
             else
@@ -368,7 +407,7 @@ namespace TournamentManager.ViewModels
                 .Reverse()
                 .ToArray();
 
-            SeriesCollection[0].Values = new ChartValues<double>(doubleValues);
+            SeriesCollection[0].Values = new ChartValues<MatchResult>(tooltipData);
             Labels = dates;
 
 

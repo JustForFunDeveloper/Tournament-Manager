@@ -26,6 +26,7 @@ namespace TournamentManager.ViewModels
         private ICommand _onDiscardTeam;
         private ICommand _onAddTeam;
         private ICommand _onDeleteTeam;
+        private ICommand _onResetTeam;
 
         private bool _canOnDeleteTeam = false;
         private bool _canOnAddUser = false;
@@ -50,11 +51,11 @@ namespace TournamentManager.ViewModels
 
         private void OnAddTeamPlayerViewOpen(object obj)
         {
-            if (ApplicationData.TeamControls != null && ApplicationData.TeamControls.Count > 0)
+            if (ApplicationData.CreatedTeams != null && ApplicationData.CreatedTeams.Count > 0)
             {
                 TeamControls = new ObservableCollection<Team>();
 
-                foreach (var teamControl in ApplicationData.TeamControls)
+                foreach (var teamControl in ApplicationData.CreatedTeams)
                 {
                     var team = new Team()
                     {
@@ -148,7 +149,7 @@ namespace TournamentManager.ViewModels
                 return;
             }
 
-            ApplicationData.TeamControls = TeamControls.ToList();
+            ApplicationData.CreatedTeams = TeamControls.ToList();
             OnAddTeamPlayerViewOpen(null);
             EditingVisibility = Visibility.Collapsed;
             _canOnAddUser = true;
@@ -305,6 +306,36 @@ namespace TournamentManager.ViewModels
                 }   
             }
             TeamControls.Remove(lastTeam);
+        }
+
+        public ICommand OnResetTeam
+        {
+            get
+            {
+                if (_onResetTeam == null)
+                    _onResetTeam = new RelayCommand(
+                        param => OnResetTeamCommand(),
+                        param => CanOnResetTeamCommand()
+                    );
+                return _onResetTeam;
+            }
+        }
+
+        private bool CanOnResetTeamCommand()
+        {
+            return true;
+        }
+
+        private void OnResetTeamCommand()
+        {
+            foreach (var teamControl in TeamControls)
+            {
+                foreach (var player in teamControl.Players)
+                {
+                    Users.Add(player);
+                }
+            }
+            TeamControls.Clear();
         }
 
         private void OnTeamChanged(object sender, EventArgs e)

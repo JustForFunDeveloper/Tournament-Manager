@@ -38,6 +38,7 @@ namespace TournamentManager.DataModels.DbModels
     public class TeamMatchResult
     {
         public int TeamMatchResultId { get; set; }
+        public int Position { get; set; }
         public double Result { get; set; }
         public string TeamName { get; set; }
         public string UserNames { get; set; }

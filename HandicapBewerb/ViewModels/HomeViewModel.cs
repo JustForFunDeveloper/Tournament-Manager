@@ -24,7 +24,6 @@ namespace TournamentManager.ViewModels
 
         #region private Member
 
-        private ICommand _searchLocalFolder;
         private ICommand _newGame;
         private ICommand _addPlayers;
         private ICommand _saveAll;
@@ -93,28 +92,6 @@ namespace TournamentManager.ViewModels
         }
 
         #region IconBar
-
-        public ICommand SearchLocalFolder
-        {
-            get
-            {
-                if (_searchLocalFolder == null)
-                    _searchLocalFolder = new RelayCommand(
-                        param => SearchLocalFolderCommand(),
-                        param => CanSearchLocalFolderCommand()
-                    );
-                return _searchLocalFolder;
-            }
-        }
-
-        private bool CanSearchLocalFolderCommand()
-        {
-            return true;
-        }
-
-        private void SearchLocalFolderCommand()
-        {
-        }
 
         public ICommand NewGame
         {

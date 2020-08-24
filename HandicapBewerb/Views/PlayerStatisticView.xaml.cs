@@ -1,4 +1,7 @@
 ﻿using System.Windows.Controls;
+using LiveCharts;
+using LiveCharts.Configurations;
+using TournamentManager.DataModels.DbModels;
 
 namespace TournamentManager.Views
 {
@@ -10,6 +13,28 @@ namespace TournamentManager.Views
         public PlayerStatisticView()
         {
             InitializeComponent();
+            //CartesianChart.DataTooltip = new CustomMatchTooltip();
+
+            //let create a mapper so LiveCharts know how to plot our CustomerViewModel class
+            var matchMapper = Mappers.Xy<MatchResult>()
+                .X((value, index) => index) // lets use the position of the item as X
+                .Y(value => value.Result); //and PurchasedItems property as Y
+
+            //lets save the mapper globally
+            Charting.For<MatchResult>(matchMapper);
+
+            var teamMatchMapper = Mappers.Xy<StatisticTeamMatchResult>()
+                .X((value, index) => index) // lets use the position of the item as X
+                .Y(value => value.SoloTeamMatchResult.Result); //and PurchasedItems property as Y
+
+            //lets save the mapper globally
+            Charting.For<StatisticTeamMatchResult>(teamMatchMapper);
+        }
+
+        public class StatisticTeamMatchResult
+        {
+            public TeamMatchResult TeamMatchResult { get; set; }
+            public SoloTeamMatchResult SoloTeamMatchResult { get; set; }
         }
     }
 }

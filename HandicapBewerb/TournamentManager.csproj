@@ -324,6 +324,10 @@
     <Compile Include="Migrations\20200817194510_TeamUpdate.designer.cs">
       <DependentUpon>20200817194510_TeamUpdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20200823130407_Position_TeamUpdate.cs" />
+    <Compile Include="Migrations\20200823130407_Position_TeamUpdate.designer.cs">
+      <DependentUpon>20200823130407_Position_TeamUpdate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ApplicationDbContextModelSnapshot.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\Common\PropertyChangedViewModel.cs" />
@@ -343,6 +347,7 @@
     <Compile Include="ViewModels\PlayerStatisticModel.cs" />
     <Compile Include="ViewModels\TeamAddPlayerViewModel.cs" />
     <Compile Include="ViewModels\TeamHomeViewModel.cs" />
+    <Compile Include="ViewModels\TeamMatchDataModel.cs" />
     <Compile Include="ViewModels\UserDataModel.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
@@ -364,6 +369,18 @@
     </Compile>
     <Compile Include="Views\TeamHomeView.xaml.cs">
       <DependentUpon>TeamHomeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TeamMatchDataView.xaml.cs">
+      <DependentUpon>TeamMatchDataView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserControls\CustomMatchTooltip.xaml.cs">
+      <DependentUpon>CustomMatchTooltip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserControls\CustomTeamMatchTooltip.xaml.cs">
+      <DependentUpon>CustomTeamMatchTooltip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserControls\TeamUserDataControl.xaml.cs">
+      <DependentUpon>TeamUserDataControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UserControls\UserDataControl.xaml.cs">
       <DependentUpon>UserDataControl.xaml</DependentUpon>
@@ -428,6 +445,22 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TeamHomeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TeamMatchDataView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserControls\CustomMatchTooltip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserControls\CustomTeamMatchTooltip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserControls\TeamUserDataControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

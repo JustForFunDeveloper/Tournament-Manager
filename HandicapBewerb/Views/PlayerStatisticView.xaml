@@ -7,6 +7,7 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:viewModels="clr-namespace:TournamentManager.ViewModels"
+             xmlns:userControls="clr-namespace:TournamentManager.Views.UserControls"
              d:DataContext="{d:DesignInstance viewModels:PlayerStatisticModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -172,11 +173,11 @@
                 Cursor="Hand"
                 Command="{Binding OnShiftRight}"/>
         </Grid>
-        <lvc:CartesianChart Grid.Row="2"
+        <lvc:CartesianChart x:Name="CartesianChart" Grid.Row="2"
                             Margin="5"
                             Series="{Binding SeriesCollection}" 
                             LegendLocation="Right"
-                            FontSize="15">
+                            FontSize="15" DataTooltip="{Binding DataToolTip}">
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis Title="Punkte" 
                           LabelFormatter="{Binding YFormatter}"

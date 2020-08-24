@@ -94,6 +94,9 @@
             <DataTemplate DataType="{x:Type viewModels1:TeamAddPlayerViewModel}">
                 <views1:TeamAddPlayerView DataContext="{Binding}" />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels1:TeamMatchDataModel}">
+                <views1:TeamMatchDataView DataContext="{Binding}" />
+            </DataTemplate>
         </Grid.Resources>
 
         <mah:HamburgerMenu

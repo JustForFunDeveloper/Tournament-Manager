@@ -19,6 +19,7 @@ namespace TournamentManager.Core.Data
         public static List<int> CurrentSelectedUser { get; set; }
         public static List<UserDataControl> UserDataControls { get; set; }
 
-        public static List<Team> TeamControls { get; set; }
+        public static List<Team> CreatedTeams { get; set; }
+        public static List<TeamUserDataControl> TeamUserDataControls { get; set; }
     }
 }

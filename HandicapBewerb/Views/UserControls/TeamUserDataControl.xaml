@@ -1,0 +1,126 @@
+﻿<UserControl x:Class="TournamentManager.Views.UserControls.TeamUserDataControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:userControls="clr-namespace:TournamentManager.Views.UserControls"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <UserControl.Resources>
+        <system:Double x:Key="HeaderSize">18</system:Double>
+        <system:Double x:Key="DataSize">15</system:Double>
+        <Brush x:Key="TextBrush">Black</Brush>
+        <Brush x:Key="BorderBrush">Black</Brush>
+        <Brush x:Key="HeaderBrush">DarkBlue</Brush>
+    </UserControl.Resources>
+    <Border BorderBrush="{StaticResource HeaderBrush}" 
+            BorderThickness="2"
+            Margin="5">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="35" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="120" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0"
+                   Grid.Column="0"
+                   Text="Team Position"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="2"
+                   Foreground="{StaticResource HeaderBrush}"
+                   FontSize="{StaticResource HeaderSize}"/>
+                <TextBlock Grid.Row="1"
+                   Grid.Column="0"
+                   Text="{Binding Path=TeamPosition}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="5"
+                   Foreground="{StaticResource TextBrush}"
+                   FontSize="{StaticResource DataSize}"/>
+                <Rectangle Grid.Column="0"
+                   Grid.Row="0"
+                   Grid.ColumnSpan="2"
+                   Stroke="{StaticResource BorderBrush}"
+                   Height="1"
+                   VerticalAlignment="Bottom"/>
+                <Rectangle Grid.Column="0"
+                   Grid.Row="0"
+                   Grid.RowSpan="2"
+                   Stroke="{StaticResource BorderBrush}"
+                   Width="1"
+                   HorizontalAlignment="Right"/>
+
+                <TextBlock Grid.Row="0"
+                   Grid.Column="1"
+                   Text="Team Name"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="2"
+                   Foreground="{StaticResource HeaderBrush}"
+                   FontSize="{StaticResource HeaderSize}"/>
+                <TextBlock Grid.Row="1"
+                   Grid.Column="1"
+                   Text="{Binding Path=TeamName}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="5"
+                   Foreground="{StaticResource TextBrush}"
+                   FontSize="{StaticResource DataSize}"/>
+                <Rectangle Grid.Column="1"
+                   Grid.Row="0"
+                   Grid.RowSpan="2"
+                   Stroke="{StaticResource BorderBrush}"
+                   Width="1"
+                   HorizontalAlignment="Right"/>
+
+                <TextBlock Grid.Row="0"
+                       Grid.Column="2"
+                       Text="Team Ergebnis"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Margin="2"
+                       Foreground="{StaticResource HeaderBrush}"
+                       FontSize="{StaticResource HeaderSize}"/>
+                <TextBlock x:Name="TxtResult" Grid.Row="1"
+                   Grid.Column="2"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="5"
+                   Foreground="{StaticResource TextBrush}"
+                   FontSize="{StaticResource DataSize}"
+                   Text="{Binding Path=TeamResult}"/>
+                <Rectangle Grid.Column="2"
+                   Grid.Row="0"
+                   Stroke="{StaticResource BorderBrush}"
+                   Height="1"
+                   VerticalAlignment="Bottom"/>
+            </Grid>
+            <ItemsControl Grid.Row="1"
+                          ItemsSource="{Binding UserDataControls}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <userControls:UserDataControl />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+    </Border>
+</UserControl>

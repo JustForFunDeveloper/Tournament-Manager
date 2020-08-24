@@ -183,7 +183,7 @@
                       PreviewMouseWheel="UserDataControl_OnPreviewMouseWheel">
             <ItemsControl BorderBrush="Black"
                           BorderThickness="1"
-                          ItemsSource="{Binding UserDataControls}">
+                          ItemsSource="{Binding TeamUserDataControls}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical"/>
@@ -192,7 +192,7 @@
 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <userControls:UserDataControl />
+                        <userControls:TeamUserDataControl />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

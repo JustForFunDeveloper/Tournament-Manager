@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using System.Text;
 using TournamentManager.Core.Data;
 using TournamentManager.DataModels.DbModels;
 using TournamentManager.Views.UserControls;
@@ -21,90 +21,6 @@ namespace TournamentManager.Core.Handler
 
                 //TestData(db);
             }
-        }
-
-        private static void TestData(ApplicationDbContext db)
-        {
-            List<Round> andiRounds = new List<Round>()
-            {
-                new Round()
-                {
-                    Date = DateTime.Now,
-                    Points = 10,
-                },
-                new Round()
-                {
-                    Date = DateTime.Now.AddHours(1),
-                    Points = 11,
-                },
-                new Round()
-                {
-                    Date = DateTime.Now.AddHours(2),
-                    Points = 12,
-                }
-            };
-
-            List<Round> franzRounds = new List<Round>()
-            {
-                new Round()
-                {
-                    Date = DateTime.Now,
-                    Points = 20,
-                },
-                new Round()
-                {
-                    Date = DateTime.Now.AddHours(1),
-                    Points = 21,
-                },
-                new Round()
-                {
-                    Date = DateTime.Now.AddHours(2),
-                    Points = 22,
-                }
-            };
-
-            User andreas = new User()
-            {
-                Name = "Andreas",
-                Rounds = andiRounds
-            };
-
-            User franz = new User()
-            {
-                Name = "Franz",
-                Rounds = franzRounds
-            };
-
-            MatchResult andiMatchResult = new MatchResult()
-            {
-                Result = 112,
-                UserName = andreas.Name
-            };
-
-            MatchResult franzMatchResult = new MatchResult()
-            {
-                Result = 212,
-                UserName = franz.Name
-            };
-
-            Match match = new Match()
-            {
-                Date = DateTime.Now,
-                MatchResults = new List<MatchResult>()
-                {
-                    andiMatchResult,
-                    franzMatchResult
-                }
-            };
-
-            db.Users.AddRange(new List<User>()
-            {
-                andreas,
-                franz
-            });
-
-            db.Matches.Add(match);
-            db.SaveChanges();
         }
 
         public static void AddUser(string name)
@@ -265,6 +181,7 @@ namespace TournamentManager.Core.Handler
                     MatchResults = matchResults
                 };
 
+                // Needed for many to many relationship
                 foreach (var userDataControl in userDataControls)
                 {
                     var user = db.Users
@@ -338,6 +255,166 @@ namespace TournamentManager.Core.Handler
                     .Single(u => u.UserId.Equals(user.UserId));
                 return new List<Match>(myUser.UserMatches.Select(userMatch => userMatch.Match));
             }
+        }
+
+        public static void SaveTeamMatch(List<TeamUserDataControl> teamUserDataControls)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                List<TeamMatchResult> teamMatchResults = new List<TeamMatchResult>();
+                List<SoloTeamMatchResult> soloTeamMatchResults = new List<SoloTeamMatchResult>();
+                foreach (var teamUserDataControl in teamUserDataControls)
+                {
+                    StringBuilder userNamesBuilder = new StringBuilder();
+                    foreach (var userDataControl in teamUserDataControl.UserDataControls)
+                    {
+                        var round = new Round()
+                        {
+                            Date = DateTime.Now,
+                            Points = userDataControl.CurrentRound
+                        };
+                        var user = db.Users
+                            .Include(u => u.Rounds)
+                            .Include(u => u.UserTeamMatches)
+                            .Single(u => u.UserId.Equals(userDataControl.UserId));
+                        user.Rounds.Add(round);
+
+                        Double.TryParse(userDataControl.Result, out double parsedResult);
+                        Int32.TryParse(userDataControl.Position, out int parsedPosition);
+
+                        if (Double.IsNaN(parsedPosition))
+                        {
+                            parsedPosition = -9999;
+                        }
+
+                        soloTeamMatchResults.Add(new SoloTeamMatchResult()
+                        {
+                            Result = parsedResult,
+                            Position = parsedPosition,
+                            UserName = user.Name,
+                            Round = userDataControl.CurrentRound
+                        });
+
+                        userNamesBuilder.Append(userDataControl.UserName).Append(";");
+                    }
+
+                    Double.TryParse(teamUserDataControl.TeamResult, out double parsedTeamResult);
+                    Int32.TryParse(teamUserDataControl.TeamPosition, out int parsedTeamPosition);
+
+                    if (Double.IsNaN(parsedTeamPosition))
+                    {
+                        parsedTeamPosition = -9999;
+                    }
+
+                    teamMatchResults.Add(new TeamMatchResult()
+                    {
+                        TeamName = teamUserDataControl.TeamName,
+                        UserNames = userNamesBuilder.ToString(),
+                        Result = parsedTeamResult,
+                        Position = parsedTeamPosition
+                    });
+                }
+
+                var teamMatch = new TeamMatch()
+                {
+                    Date = DateTime.Now,
+                    SoloTeamMatchResults = soloTeamMatchResults,
+                    TeamMatchResults = teamMatchResults
+                };
+
+                foreach (var teamUserDataControl in teamUserDataControls)
+                {
+                    // Needed for many to many relationship
+                    foreach (var userDataControl in teamUserDataControl.UserDataControls)
+                    {
+                        var user = db.Users
+                            .Include(u => u.Rounds)
+                            .Include(u => u.UserTeamMatches)
+                            .Single(u => u.UserId.Equals(userDataControl.UserId));
+
+                        var userTeamMatch = new UserTeamMatch()
+                        {
+                            TeamMatch = teamMatch,
+                            User = user
+                        };
+                        user.UserTeamMatches.Add(userTeamMatch);
+                    }
+                }
+
+                db.SaveChanges();
+            }
+        }
+
+        public static void DeleteTeamMatches(List<TeamMatch> teamMatches)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                foreach (var teamMatch in teamMatches)
+                {
+                    if (teamMatch.TeamMatchToDelete)
+                    {
+                        var queryable = db.TeamMatches
+                            .Include(m => m.TeamMatchResults)
+                            .Include(t => t.SoloTeamMatchResults)
+                            .Single(m => m.TeamMatchId.Equals(teamMatch.TeamMatchId));
+                        db.TeamMatchResults.RemoveRange(queryable.TeamMatchResults);
+                        db.SoloTeamMatchResults.RemoveRange(queryable.SoloTeamMatchResults);
+                        db.TeamMatches.Remove(queryable);
+                        db.SaveChanges();
+                    }
+                }
+            }
+        }
+
+        public static List<SoloTeamMatchResult> GetSoloTeamMatchResults(TeamMatch teamMatch)
+        {
+            if (teamMatch == null)
+            {
+                return null;
+            }
+
+            List<SoloTeamMatchResult> teamMatchResults;
+            using (var db = new ApplicationDbContext())
+            {
+                teamMatchResults = db.TeamMatches
+                    .Include(m => m.SoloTeamMatchResults)
+                    .Single(m => m.TeamMatchId.Equals(teamMatch.TeamMatchId))
+                    .SoloTeamMatchResults.ToList();
+            }
+
+            return teamMatchResults;
+        }
+
+        public static List<TeamMatchResult> GetTeamMatchResults(TeamMatch teamMatch)
+        {
+            if (teamMatch == null)
+            {
+                return null;
+            }
+
+            List<TeamMatchResult> teamMatchResults;
+            using (var db = new ApplicationDbContext())
+            {
+                teamMatchResults = db.TeamMatches
+                    .Include(m => m.TeamMatchResults)
+                    .Single(m => m.TeamMatchId.Equals(teamMatch.TeamMatchId))
+                    .TeamMatchResults.ToList();
+            }
+
+            return teamMatchResults;
+        }
+
+        public static List<TeamMatch> GetTeamMatchesIncludingResults()
+        {
+            List<TeamMatch> matches;
+            using (var db = new ApplicationDbContext())
+            {
+                matches = new List<TeamMatch>(db.TeamMatches
+                    .Include(m => m.SoloTeamMatchResults)
+                    .Include(m => m.TeamMatchResults));
+            }
+
+            return matches;
         }
     }
 }
