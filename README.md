@@ -26,10 +26,10 @@ Find the latest relase here =>
 ## Pictures!
 
 Find the latest relase here =>
-![]https://github.com/JustForFunDeveloper/Tournament-Manager/blob/master/Pictures/HandicapSolo.png) <br/>
-![]https://github.com/JustForFunDeveloper/Tournament-Manager/blob/master/Pictures/HandicapTeam.png) <br/>
-![]https://github.com/JustForFunDeveloper/Tournament-Manager/blob/master/Pictures/PlayerManagment.png) <br/>
-![]https://github.com/JustForFunDeveloper/Tournament-Manager/blob/master/Pictures/Statistik.png) <br/>
+![](https://github.com/JustForFunDeveloper/Tournament-Manager/blob/master/Pictures/HandicapSolo.png) <br/>
+![](https://github.com/JustForFunDeveloper/Tournament-Manager/blob/master/Pictures/HandicapTeam.png) <br/>
+![](https://github.com/JustForFunDeveloper/Tournament-Manager/blob/master/Pictures/PlayerManagment.png) <br/>
+![](https://github.com/JustForFunDeveloper/Tournament-Manager/blob/master/Pictures/Statistik.png) <br/>
 
 - - - -
 ## Short description of the used libraries and techniques
