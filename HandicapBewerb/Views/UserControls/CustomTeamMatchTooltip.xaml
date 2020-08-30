@@ -2,8 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:TournamentManager.Views.UserControls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:model="clr-namespace:TournamentManager.DataModels.DbModels"
              mc:Ignorable="d" 
@@ -45,6 +44,8 @@
                                             <RowDefinition Height="Auto" SharedSizeGroup="Result"/>
                                             <RowDefinition Height="Auto" SharedSizeGroup="Round"/>
                                             <RowDefinition Height="Auto" SharedSizeGroup="Position"/>
+                                            <RowDefinition Height="Auto" SharedSizeGroup="TeamResult"/>
+                                            <RowDefinition Height="Auto" SharedSizeGroup="TeamPosition"/>
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"/>
@@ -60,17 +61,27 @@
                                               Stretch="Fill" Data="{Binding Series.PointGeometry}"/>
                                         <TextBlock Grid.Row="0" 
                                                    Grid.Column="1" 
-                                                   Text="{Binding ChartPoint.Instance.(model:MatchResult.Result), StringFormat=Ergebnis: {0:F2}}" 
+                                                   Text="{Binding ChartPoint.Instance.(model:StatisticTeamMatchResult.SoloTeamMatchResult).Result, StringFormat=Solo Ergebnis: {0:F2}}" 
                                                    VerticalAlignment="Center" 
                                                    Foreground="Black"/>
                                         <TextBlock Grid.Row="1" 
                                                    Grid.Column="1" 
-                                                   Text="{Binding ChartPoint.Instance.(model:MatchResult.Round), StringFormat=Runde: {0:F1}}" 
+                                                   Text="{Binding ChartPoint.Instance.(model:StatisticTeamMatchResult.SoloTeamMatchResult).Round, StringFormat=Solo Runde: {0:F1}}" 
                                                    VerticalAlignment="Center" 
                                                    Foreground="Black"/>
                                         <TextBlock Grid.Row="2" 
                                                    Grid.Column="1" 
-                                                   Text="{Binding ChartPoint.Instance.(model:MatchResult.Position), StringFormat=Position: {0}}" 
+                                                   Text="{Binding ChartPoint.Instance.(model:StatisticTeamMatchResult.SoloTeamMatchResult).Position, StringFormat=Solo Position: {0}}" 
+                                                   VerticalAlignment="Center" 
+                                                   Foreground="Black"/>
+                                        <TextBlock Grid.Row="3" 
+                                                   Grid.Column="1" 
+                                                   Text="{Binding ChartPoint.Instance.(model:StatisticTeamMatchResult.TeamMatchResult).Result, StringFormat=Team Ergebnis: {0:F2}}" 
+                                                   VerticalAlignment="Center" 
+                                                   Foreground="Black"/>
+                                        <TextBlock Grid.Row="4" 
+                                                   Grid.Column="1" 
+                                                   Text="{Binding ChartPoint.Instance.(model:StatisticTeamMatchResult.TeamMatchResult).Position, StringFormat=Team Position: {0}}" 
                                                    VerticalAlignment="Center" 
                                                    Foreground="Black"/>
                                     </Grid>

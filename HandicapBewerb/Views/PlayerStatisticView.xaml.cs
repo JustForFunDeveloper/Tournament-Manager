@@ -1,6 +1,8 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using LiveCharts;
 using LiveCharts.Configurations;
+using SimpleWPFReporting;
 using TournamentManager.DataModels.DbModels;
 
 namespace TournamentManager.Views
@@ -31,10 +33,9 @@ namespace TournamentManager.Views
             Charting.For<StatisticTeamMatchResult>(teamMatchMapper);
         }
 
-        public class StatisticTeamMatchResult
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            public TeamMatchResult TeamMatchResult { get; set; }
-            public SoloTeamMatchResult SoloTeamMatchResult { get; set; }
+            Report.ExportVisualAsPdf(Print);
         }
     }
 }

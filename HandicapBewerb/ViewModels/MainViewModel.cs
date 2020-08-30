@@ -54,6 +54,7 @@ namespace TournamentManager.ViewModels
             Mediator.Register(MediatorGlobal.OnBackToUserDataView, OnBackToUserDataView);
             Mediator.Register(MediatorGlobal.OnMatchStatistics, OnStatisticsWindow);
             Mediator.Register(MediatorGlobal.OnRoundStatistics, OnStatisticsWindow);
+            Mediator.Register(MediatorGlobal.OnTeamMatchStatistics, OnStatisticsWindow);
 
             LoginText = "Anmelden";
         }

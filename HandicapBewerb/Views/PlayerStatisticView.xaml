@@ -10,7 +10,8 @@
              xmlns:userControls="clr-namespace:TournamentManager.Views.UserControls"
              d:DataContext="{d:DesignInstance viewModels:PlayerStatisticModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             x:Name="Print">
     <UserControl.Resources>
         <system:Double x:Key="IconSize">25</system:Double>
         <Style
@@ -60,6 +61,20 @@
                 </Trigger>
                 <Trigger Property="IsPressed" Value="True">
                     <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=ArrowBack, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style
+            x:Key="PdfIcon"
+            BasedOn="{StaticResource IconStyle}"
+            TargetType="Button">
+            <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=PictureAsPdf, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=PictureAsPdf, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Content" Value="{iconPacks:MaterialDesign Kind=PictureAsPdf, Width={StaticResource IconSize}, Height={StaticResource IconSize}}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -142,6 +157,12 @@
                 Cursor="Hand"
                 Margin="10,0,0,0"
                 Command="{Binding OnClose}"/>
+            <Button
+                Style="{DynamicResource PdfIcon}"
+                ToolTip="Als PDF speichern" 
+                Cursor="Hand"
+                Margin="20,0,0,0"
+                Click="ButtonBase_OnClick" />
         </StackPanel>
         <Grid Grid.Row="1"
               HorizontalAlignment="Center"
@@ -177,7 +198,8 @@
                             Margin="5"
                             Series="{Binding SeriesCollection}" 
                             LegendLocation="Right"
-                            FontSize="15" DataTooltip="{Binding DataToolTip}">
+                            FontSize="15" 
+                            DataTooltip="{Binding DataToolTip}">
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis Title="Punkte" 
                           LabelFormatter="{Binding YFormatter}"

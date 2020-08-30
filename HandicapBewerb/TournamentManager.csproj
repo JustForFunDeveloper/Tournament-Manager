@@ -238,8 +238,17 @@
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PdfSharp-WPF, Version=1.32.2608.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PdfSharp-WPF.SimpleWPFReporting.1.0.0\lib\net45\PdfSharp-WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp.Xps, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PdfSharp.Xps.SimpleWPFReporting.1.0.0\lib\net45\PdfSharp.Xps.dll</HintPath>
+    </Reference>
     <Reference Include="PropertyChanged, Version=3.2.8.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
       <HintPath>..\packages\PropertyChanged.Fody.3.2.8\lib\net40\PropertyChanged.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleWPFReporting, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleWPFReporting.1.1.0\lib\net45\SimpleWPFReporting.dll</HintPath>
     </Reference>
     <Reference Include="SQLitePCLRaw.batteries_v2, Version=2.0.2.669, Culture=neutral, PublicKeyToken=8226ea5df37bcae9, processorArchitecture=MSIL">
       <HintPath>..\packages\SQLitePCLRaw.bundle_e_sqlite3.2.0.2\lib\net461\SQLitePCLRaw.batteries_v2.dll</HintPath>
@@ -269,6 +278,7 @@
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.7.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -313,6 +323,7 @@
     <Compile Include="DataModels\DbModels\Match.cs" />
     <Compile Include="DataModels\DbModels\MatchResult.cs" />
     <Compile Include="DataModels\DbModels\Round.cs" />
+    <Compile Include="DataModels\StatisticTeamMatchResult.cs" />
     <Compile Include="DataModels\DbModels\TeamMatch.cs" />
     <Compile Include="DataModels\DbModels\User.cs" />
     <Compile Include="DataModels\DbModels\UserMatch.cs" />

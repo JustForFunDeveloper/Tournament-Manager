@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using LiveCharts;
@@ -229,11 +230,6 @@ namespace TournamentManager.ViewModels
                 RefreshTeamMatchChart();
         }
 
-        private void RefreshTeamMatchChart()
-        {
-            throw new NotImplementedException();
-        }
-
         public PlayerStatisticModel()
         {
             Mediator.Register(MediatorGlobal.OnRoundStatistics, OnRoundStatistics);
@@ -246,7 +242,7 @@ namespace TournamentManager.ViewModels
             _statisticMode = StatisticMode.TeamMatchMode;
             _currentZoomLevel = 100;
             DataToolTip = new CustomTeamMatchTooltip();
-            //DisplayTeamMatchGraphForUser((int?)obj);
+            DisplayTeamMatchGraphForUser((int?)obj);
         }
 
         private void OnMatchStatistics(object obj)
@@ -300,6 +296,25 @@ namespace TournamentManager.ViewModels
             };
             YFormatter = value => value.ToString("F1");
             RefreshMatchChart();
+        }
+
+        private void DisplayTeamMatchGraphForUser(int? userId)
+        {
+            _currentUserId = userId;
+            SeriesCollection = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Title = "Team Matches",
+                    Values = new ChartValues<double> (),
+                    LineSmoothness = 0,
+                    PointGeometry = DefaultGeometries.Square,
+                    PointGeometrySize = 10,
+                    Stroke = Brushes.Green
+                }
+            };
+            YFormatter = value => value.ToString("F1");
+            RefreshTeamMatchChart();
         }
 
         private void RefreshRoundChart()
@@ -419,6 +434,87 @@ namespace TournamentManager.ViewModels
             }
 
             _zoomSteps = doubleValues.Count() / 2;
+        }
+
+        private void RefreshTeamMatchChart()
+        {
+            if (_currentUserId == null)
+                return;
+
+            var user = DbHandler.GetUsers().Single(u => u.UserId.Equals((int)_currentUserId));
+            UserText = $"Team Match Statistik von {user.Name}";
+
+            var matches = DbHandler.GetAllTeamMatchesFromUser(user);
+            var tooltipDataSoloResults = matches
+                .OrderByDescending(r => r.Date)
+                .Skip(_currentSkipValue).Take(_currentZoomLevel)
+                .SelectMany(r => r.SoloTeamMatchResults.Where(mr => mr.UserName == user.Name))
+                .Reverse();
+
+            var tooltipDataTeamResults = matches
+                .OrderByDescending(r => r.Date)
+                .Skip(_currentSkipValue).Take(_currentZoomLevel)
+                .SelectMany(r => r.TeamMatchResults.Where(mr => mr.UserNames.Contains(user.Name)))
+                .Reverse();
+
+            if (tooltipDataSoloResults.Count() <= 2)
+            {
+                _canOnShiftLeft = false;
+                if (tooltipDataSoloResults.Count() <= 0)
+                {
+                    _canOnShiftLeft = false;
+                    _currentSkipValue = _lastDataSkipLevel;
+
+                    tooltipDataSoloResults = matches
+                        .OrderByDescending(r => r.Date)
+                        .Skip(_currentSkipValue).Take(_currentZoomLevel)
+                        .SelectMany(r => r.SoloTeamMatchResults.Where(mr => mr.UserName == user.Name))
+                        .Reverse();
+
+                    tooltipDataTeamResults = matches
+                        .OrderByDescending(r => r.Date)
+                        .Skip(_currentSkipValue).Take(_currentZoomLevel)
+                        .SelectMany(r => r.TeamMatchResults.Where(mr => mr.UserNames.Contains(user.Name)))
+                        .Reverse();
+                }
+            }
+            else
+            {
+                _lastDataSkipLevel = _currentSkipValue;
+            }
+
+            var dates = matches
+                .Select(r => r.Date)
+                .OrderByDescending(r => r)
+                .Skip(_currentSkipValue)
+                .Take(_currentZoomLevel)
+                .Select(d => d.ToString(DATE_FORMAT))
+                .Reverse()
+                .ToArray();
+
+            List<StatisticTeamMatchResult> statList = new List<StatisticTeamMatchResult>();
+
+            for (int i = 0; i < tooltipDataSoloResults.Count(); i++)
+            {
+                statList.Add(new StatisticTeamMatchResult()
+                {
+                    SoloTeamMatchResult = tooltipDataSoloResults.ElementAt(i),
+                    TeamMatchResult = tooltipDataTeamResults.ElementAt(i)
+                });
+            }
+
+            SeriesCollection[0].Values = new ChartValues<StatisticTeamMatchResult>(statList);
+            Labels = dates;
+
+
+            if (tooltipDataSoloResults.Count() < _currentZoomLevel)
+            {
+                //_canOnZoomOut = false;
+                _currentZoomLevel = tooltipDataSoloResults.Count();
+                _canOnZoomIn = true;
+            }
+
+            _zoomSteps = tooltipDataSoloResults.Count() / 2;
         }
     }
 }

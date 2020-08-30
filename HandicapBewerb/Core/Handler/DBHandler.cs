@@ -257,6 +257,21 @@ namespace TournamentManager.Core.Handler
             }
         }
 
+        public static List<TeamMatch> GetAllTeamMatchesFromUser(User user)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                var myUser = db.Users.Include(m => m.UserTeamMatches)
+                    .ThenInclude(m => m.TeamMatch)
+                    .ThenInclude(m => m.TeamMatchResults)
+                    .Include(m => m.UserTeamMatches)
+                    .ThenInclude(m => m.TeamMatch)
+                    .ThenInclude(m => m.SoloTeamMatchResults)
+                    .Single(u => u.UserId.Equals(user.UserId));
+                return new List<TeamMatch>(myUser.UserTeamMatches.Select(userTeamMatch => userTeamMatch.TeamMatch));
+            }
+        }
+
         public static void SaveTeamMatch(List<TeamUserDataControl> teamUserDataControls)
         {
             using (var db = new ApplicationDbContext())
