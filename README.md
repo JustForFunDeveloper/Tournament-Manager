@@ -23,9 +23,8 @@ Further tournament modes will be implemented in the future.
 Find the latest relase here =>
 [<b>Release</b>](https://github.com/JustForFunDeveloper/Tournament-Manager/releases)
 
-## Pictures!
+## Pictures
 
-Find the latest relase here =>
 ![](https://github.com/JustForFunDeveloper/Tournament-Manager/blob/master/Pictures/HandicapSolo.png) <br/>
 ![](https://github.com/JustForFunDeveloper/Tournament-Manager/blob/master/Pictures/HandicapTeam.png) <br/>
 ![](https://github.com/JustForFunDeveloper/Tournament-Manager/blob/master/Pictures/PlayerManagment.png) <br/>
