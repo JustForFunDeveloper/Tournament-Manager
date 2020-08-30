@@ -17,10 +17,19 @@ Further tournament modes will be implemented in the future.
 [![](https://img.shields.io/github/issues-raw/JustForFunDeveloper/Tournament-Manager.svg?style=flat-square)](https://github.com/JustForFunDeveloper/Tournament-Manager/issues)
 [![](https://img.shields.io/github/issues-closed-raw/JustForFunDeveloper/Tournament-Manager.svg?style=flat-square)](https://github.com/JustForFunDeveloper/Tournament-Manager/issues)
 
+
 ## Releases!
 
 Find the latest relase here =>
 [<b>Release</b>](https://github.com/JustForFunDeveloper/Tournament-Manager/releases)
+
+## Pictures!
+
+Find the latest relase here =>
+![]https://github.com/JustForFunDeveloper/Tournament-Manager/blob/master/Pictures/HandicapSolo.png) <br/>
+![]https://github.com/JustForFunDeveloper/Tournament-Manager/blob/master/Pictures/HandicapTeam.png) <br/>
+![]https://github.com/JustForFunDeveloper/Tournament-Manager/blob/master/Pictures/PlayerManagment.png) <br/>
+![]https://github.com/JustForFunDeveloper/Tournament-Manager/blob/master/Pictures/Statistik.png) <br/>
 
 - - - -
 ## Short description of the used libraries and techniques
