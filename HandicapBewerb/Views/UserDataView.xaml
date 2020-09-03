@@ -7,6 +7,7 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:viewModels="clr-namespace:TournamentManager.ViewModels"
+             xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
              d:DataContext="{d:DesignInstance viewModels:UserDataModel}"
              mc:Ignorable="d" 
              d:DesignHeight="700"
@@ -228,22 +229,30 @@
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="Spieler Löschen">
+                <DataGridTemplateColumn Header="Löschen">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsChecked="{Binding UsersToDelete,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            <CheckBox IsChecked="{Binding User.UsersToDelete,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       HorizontalAlignment="Center"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Binding="{Binding UserId}"
+                <DataGridTextColumn Binding="{Binding User.UserId}"
                                     EditingElementStyle="{StaticResource MahApps.Styles.TextBox.DataGrid.Editing}"
                                     Header="Spieler Id" 
                                     IsReadOnly="True"/>
-                <DataGridTextColumn Binding="{Binding Name}"
+                <DataGridTextColumn Binding="{Binding User.Name}"
                                     EditingElementStyle="{StaticResource MahApps.Styles.TextBox.DataGrid.Editing}"
                                     Header="Name"
                                     Width="*"/>
+                <DataGridTextColumn Binding="{Binding OldNullValue, StringFormat='F', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}"
+                                    EditingElementStyle="{StaticResource MahApps.Styles.TextBox.DataGrid.Editing}"
+                                    Header="Letzter Nullwert" 
+                                    IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding CurrentNullValue, StringFormat='F', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}"
+                                    EditingElementStyle="{StaticResource MahApps.Styles.TextBox.DataGrid.Editing}"
+                                    Header="Aktueller Nullwert" 
+                                    IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
         <DataGrid Grid.Row="1"

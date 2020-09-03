@@ -17,7 +17,7 @@ namespace TournamentManager.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
 
         private ObservableCollection<Round> _rounds;
-        private User _selection;
+        private CalculatedUser _selection;
         private List<Round> _roundsToDelete = new List<Round>();
         private User _editedUser;
 
@@ -37,7 +37,7 @@ namespace TournamentManager.ViewModels
         public bool IsRoundEditingEnabled { get; set; }
         public bool IsUserEditingEnabled { get; set; }
         public Visibility EditingVisibility { get; set; }
-        public ObservableCollection<User> Users { get; set; }
+        public ObservableCollection<CalculatedUser> Users { get; set; }
         public Round SelectedRound { get; set; }
 
         public ObservableCollection<Round> Rounds {
@@ -51,7 +51,7 @@ namespace TournamentManager.ViewModels
             }
         }
 
-        public User Selection
+        public CalculatedUser Selection
         {
             get
             {
@@ -62,7 +62,7 @@ namespace TournamentManager.ViewModels
                 if (value != null)
                 {
                     IsRoundEditingEnabled = true;
-                    Rounds = new ObservableCollection<Round>(DbHandler.GetUserRounds(value));
+                    Rounds = new ObservableCollection<Round>(DbHandler.GetUserRounds(value.User));
                 }
                 else
                 {
@@ -86,7 +86,7 @@ namespace TournamentManager.ViewModels
 
         private void OnPlayerEditUserComit(object obj)
         {
-            _editedUser = Users.Single(u => u.UserId.Equals((int) obj));
+            _editedUser = Users.Single(u => u.User.UserId.Equals((int) obj)).User;
 
             EditingVisibility = Visibility.Visible;
             IsRoundsReadOnly = true;
@@ -132,7 +132,58 @@ namespace TournamentManager.ViewModels
 
         private void OnUserDataViewOpen(object obj)
         {
-            Users = new ObservableCollection<User>(DbHandler.GetUsersIncludingRounds());
+            var users = DbHandler.GetUsersIncludingRounds();
+
+            List<CalculatedUser> calculatedUsers = new List<CalculatedUser>();
+            foreach (var user in users)
+            {
+                double oldNullValue = Double.NaN;
+                double currentNullValue = Double.NaN;
+                if (user.Rounds.Count > 0)
+                {
+                    try
+                    {
+                        int skipValue = 1;
+                        int takeValue = 3;
+                        if (user.Rounds.Count < 4)
+                        {
+                            skipValue = 0;
+                            takeValue = user.Rounds.Count;
+                        }
+
+                        oldNullValue = user.Rounds.OrderByDescending(r => r.Date)
+                            .Skip(skipValue).Take(takeValue).Select(x => x.Points).Average();
+                    }
+                    catch (Exception)
+                    {
+                    }
+
+                    try
+                    {
+                        int takeValue = 3;
+
+                        if (user.Rounds.Count < 3)
+                        {
+                            takeValue = user.Rounds.Count;
+                        }
+
+                        currentNullValue = user.Rounds.OrderByDescending(r => r.Date)
+                            .Take(3).Select(x => x.Points).Average();
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+
+                calculatedUsers.Add(new CalculatedUser()
+                {
+                    User = user,
+                    OldNullValue = oldNullValue,
+                    CurrentNullValue = currentNullValue
+                });
+
+            }
+            Users = new ObservableCollection<CalculatedUser>(calculatedUsers);
             Rounds = new ObservableCollection<Round>();
 
             if (ApplicationData.IsAdminLoggedIn)
@@ -172,11 +223,11 @@ namespace TournamentManager.ViewModels
 
         private void OnSaveUserCommand()
         {
-            Selection.Rounds = Rounds;
-            DbHandler.UpdateUser(Selection);
+            Selection.User.Rounds = Rounds;
+            DbHandler.UpdateUser(Selection.User);
             if (_roundsToDelete.Count > 0)
             {
-                DbHandler.RemoveRounds(_roundsToDelete, Selection);
+                DbHandler.RemoveRounds(_roundsToDelete, Selection.User);
                 _roundsToDelete = new List<Round>();
             }
 
@@ -268,7 +319,7 @@ namespace TournamentManager.ViewModels
 
             try
             {
-                DbHandler.DeleteUsers(Users.ToList());
+                DbHandler.DeleteUsers(Users.Select(x => x.User).ToList());
                 OnUserDataViewOpen(null);
             }
             catch (Exception e)
@@ -371,7 +422,7 @@ namespace TournamentManager.ViewModels
         {
             if (Selection != null)
             {
-                Mediator.NotifyColleagues(MediatorGlobal.OnRoundStatistics, Selection.UserId);
+                Mediator.NotifyColleagues(MediatorGlobal.OnRoundStatistics, Selection.User.UserId);
             }
         }
 
@@ -397,7 +448,7 @@ namespace TournamentManager.ViewModels
         {
             if (Selection != null)
             {
-                Mediator.NotifyColleagues(MediatorGlobal.OnMatchStatistics, Selection.UserId);
+                Mediator.NotifyColleagues(MediatorGlobal.OnMatchStatistics, Selection.User.UserId);
             }
         }
 
@@ -423,7 +474,7 @@ namespace TournamentManager.ViewModels
         {
             if (Selection != null)
             {
-                Mediator.NotifyColleagues(MediatorGlobal.OnTeamMatchStatistics, Selection.UserId);
+                Mediator.NotifyColleagues(MediatorGlobal.OnTeamMatchStatistics, Selection.User.UserId);
             }
         }
 
@@ -435,5 +486,12 @@ namespace TournamentManager.ViewModels
             IsRoundEditingEnabled = true;
             IsUserEditingEnabled = false;
         }
+    }
+
+    public class CalculatedUser
+    {
+        public User User { get; set; }
+        public double OldNullValue { get; set; }
+        public double CurrentNullValue { get; set; }
     }
 }
